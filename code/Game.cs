@@ -1,7 +1,9 @@
+using Gamelib.Network;
 using Sandbox;
 using Sandbox.UI.Construct;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using TerryDefense.Player;
@@ -24,6 +26,10 @@ namespace TerryDefense {
 		public override void Shutdown() {
 			if(Instance == this)
 				Instance = null;
+
+			foreach(var item in ConfigGlobals.All.OfType<Globals>()) {
+				item.Delete();
+			}
 		}
 
 		public override void ClientJoined(Client client) {
