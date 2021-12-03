@@ -1,15 +1,19 @@
 using System;
+using Hammer;
 using Sandbox;
 
 
 namespace TerryDefense.entities {
-	[Library("td_room")]
-	public partial class BaseRoom : Entity {
+	[Library("td_room"), BoundsHelper(nameof(MinBounds), nameof(MaxBounds), true, true)]
+	public partial class BaseRoom : ModelEntity {
 		[Property, Net] public RoomType Type { get; set; }
+		[Property, Net] public Vector3 MinBounds { get; set; } = new Vector3(-100);
+		[Property, Net] public Vector3 MaxBounds { get; set; } = new Vector3(100);
 
 		public override void Spawn() {
 			base.Spawn();
 			Transmit = TransmitType.Always;
+			SetupPhysicsFromAABB(PhysicsMotionType.Static, MinBounds, MaxBounds);
 		}
 		[Event.Tick.Server]
 		public void DebugPrint() {
@@ -39,7 +43,8 @@ namespace TerryDefense.entities {
 					break;
 			}
 
-			DebugOverlay.Sphere(Position + Vector3.Up * 500, 100f, col);
+			DebugOverlay.Sphere(Position, 100f, col);
+			DebugOverlay.Box(WorldSpaceBounds.Mins + 10, WorldSpaceBounds.Maxs - 10, col);
 
 
 

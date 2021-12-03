@@ -15,6 +15,7 @@ namespace TerryDefense {
 	public partial class TerryDefenseGame : Game {
 		public static TerryDefenseGame Instance { get; protected set; }
 		[Net] public WorldManager WorldManager { get; protected set; }
+		[Net] public MechanicManager GameplayManager { get; protected set; }
 
 		[Net] protected bool PlayerJoined { get; set; }
 		public TerryDefenseGame() {
@@ -32,9 +33,10 @@ namespace TerryDefense {
 					return;
 				}
 			}
-
-
-
+		}
+		[Event.Tick]
+		public void Tick() {
+			GameplayManager?.Update();
 		}
 		public override void Shutdown() {
 			if(Instance == this)
@@ -54,6 +56,7 @@ namespace TerryDefense {
 						break;
 					case GameState.Base:
 						Player = new BasePlayer();
+						GameplayManager = new BaseManager();
 						break;
 					case GameState.Ingame:
 						break;
@@ -72,6 +75,8 @@ namespace TerryDefense {
 
 			Player.Respawn();
 			PlayerJoined = true;
+
+			GameplayManager?.Init();
 		}
 
 		public override void DoPlayerSuicide(Client cl) {

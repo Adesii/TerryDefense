@@ -20,6 +20,10 @@ namespace TerryDefense.Player {
 
 			base.Activated();
 		}
+		public void ZoomBy(float amount) {
+			ZoomLevel -= amount * 0.3f;
+			ZoomLevel = ZoomLevel.Clamp(1f, 8f);
+		}
 		public override void Update() {
 			if(Local.Pawn is not BasePlayer player) return;
 
@@ -28,11 +32,6 @@ namespace TerryDefense.Player {
 			Velocity.z += Input.Forward;
 			Velocity.y += Input.Left;
 
-
-			if(Input.MouseWheel != 0) {
-				ZoomLevel -= Input.MouseWheel * 0.1f;
-				ZoomLevel = ZoomLevel.Clamp(1f, 8f);
-			}
 			Velocity *= Speed * (ZoomLevel * 0.5f);
 			if(Input.Down(InputButton.Run)) {
 				Velocity *= 2f;

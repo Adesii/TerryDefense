@@ -1,5 +1,6 @@
 using System;
 using Sandbox;
+using TerryDefense.UI;
 
 namespace TerryDefense.Player {
 	public class BasePlayer : PlayerPawn {
@@ -10,7 +11,11 @@ namespace TerryDefense.Player {
 		public override void Respawn() {
 			base.Respawn();
 			Camera = new BaseCamera();
+		}
 
+		public override void ClientSpawn() {
+			base.ClientSpawn();
+			TerryDefenseHud.SetNewMainPanel(new BaseHudRoot());
 		}
 
 		public override void Simulate(Client cl) {
