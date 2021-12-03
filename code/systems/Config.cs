@@ -19,16 +19,9 @@ namespace TerryDefense.systems {
 		public CameraConfig Camera;
 	}
 
-	internal partial class ConfigGlobals : Globals {
-		[Net] public GameConfig Config { get; set; }
-
-		public ConfigGlobals() {
-			Config = systems.Config.Default;
-		}
-	}
-
 	public static partial class Config {
-		private static Globals<ConfigGlobals> Variables = Globals.Define<ConfigGlobals>("config");
+
+		public static GameConfig CurrentConfig { get; set; }
 
 		public static GameConfig Default => new() {
 			Camera = new CameraConfig {
@@ -44,7 +37,6 @@ namespace TerryDefense.systems {
 			}
 		};
 
-		public static GameConfig Current => Variables.Value?.Config ?? Default;
-		public static bool IsValid => Variables.Value.IsValid();
+		public static GameConfig Current => CurrentConfig;
 	}
 }

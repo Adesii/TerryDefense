@@ -4,6 +4,7 @@ MainMenuRoot {
   pointer-events: all;
   width: 100%;
   height: 100%;
+  justify-content: center;
   .Title {
     position: absolute;
     width: 45%;
@@ -14,7 +15,7 @@ MainMenuRoot {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: rgba(151, 52, 27, 0.719);
+    background-color: $PrimaryWarnColorDark;
     border-radius: 10px;
     transition: all 0.3s ease;
   }
@@ -24,15 +25,28 @@ MainMenuRoot {
     height: 50px;
     top: 70px;
     right: 40px;
-    background-color: rgba(151, 52, 27, 0.719);
+    background: radial-gradient(
+      rgba(230, 37, 37, 1) 0%,
+      $PrimaryWarnColorDark 33%,
+      rgba(0, 0, 0, 0) 50%
+    );
     border-radius: 50%;
     &.Blinking {
       opacity: 0;
     }
   }
+  .SurroundBorder {
+    align-self: center;
+    width: 98%;
+    height: 95%;
+    position: absolute;
+    border-top: 3px solid $PrimaryWarnColorDark;
+    border-bottom: 3px solid $PrimaryWarnColorDark;
+    z-index: -100;
+  }
   .container {
     width: 100%;
-    height: 50%;
+    height: 65%;
     position: absolute;
     align-self: center;
 
@@ -42,16 +56,19 @@ MainMenuRoot {
       border-top-right-radius: 20px;
       flex-direction: column;
       position: absolute;
-      width: 50px;
+      width: 90px;
+      left: -30px;
       height: 100%;
-      background-color: rgba(128, 128, 128, 0.411);
-      justify-content: space-between;
+      border: 5px solid rgb(31, 63, 99);
+      padding-top: 10%;
+      padding-bottom: 10%;
+      justify-content: center;
       .item {
         pointer-events: all;
         border-radius: 20px;
-        margin-top: 25px;
-        margin-bottom: 25px;
-        margin-left: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 50px;
         width: 300px;
         height: 100px;
         background-color: $SecondaryColor;
@@ -61,16 +78,27 @@ MainMenuRoot {
         font-size: 30px;
         transition: all 0.1s ease;
         transform-origin: left;
-        &:hover {
+        &:hover:not(.continue) {
           background-color: $PrimaryColorHover;
           color: black;
+        }
+        &.continue {
+          background-color: $SecondaryColorDark;
+          color: gray;
+          &.hasSave {
+            background-color: $SecondaryColor;
+            &:hover {
+              background-color: $PrimaryColorHover;
+              color: black;
+            }
+          }
         }
       }
     }
   }
   &.submenu {
     .Title {
-      top: 0;
+      top: 50;
       transform: translate(-50%, 0);
     }
     .container {
@@ -89,22 +117,28 @@ MainMenuRoot {
     height: 70%;
     position: absolute;
     align-self: center;
-    transform: translateX(25%);
+    justify-content: center;
+    //transform: translateX(25%);
     opacity: 1;
+
+    bottom: 75px;
+
+    border-radius: 10px;
     &:intro {
       opacity: 0;
-      transform: translate(25%, 200px);
+      transform: translateY(200px);
     }
     &:outro {
       opacity: 0;
-      transform: translate(25%, 200px);
+      transform: translateY(200px);
     }
     .back {
+      border-radius: 10px;
       align-items: center;
       text-align: center;
       position: absolute;
       background-color: $PrimaryColorHover;
-      width: 100px;
+      width: 200px;
       height: 50px;
       right: 10px;
       bottom: 10px;

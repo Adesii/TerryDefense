@@ -3,4 +3,20 @@
 Layer0
 {
 	shader "glitchy.vfx"
+
+	//---- Post Processing ----
+	F_CHROMATICABBERATION 1
+	F_NOISE 1
+	F_SCANLINES 1
+
+	//---- ChromaticAberration ----
+	g_fChromaticAberrationIntensity "191.710"
+
+	//---- Noise ----
+	g_fNoiseIntensity "1.000"
+
+	//---- ScanLines ----
+	g_fScanLinesIntensity "1.000"
+	g_fScanLinesSize "1.000"
+	g_fScanLinesSpeed "1.000"
 }

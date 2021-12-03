@@ -63,6 +63,21 @@ PS
     CreateTexture2D( g_tDepthBuffer ) < Attribute( "DepthBuffer" ); 	SrgbRead( false ); Filter( MIN_MAG_MIP_POINT ); AddressU( CLAMP ); AddressV( CLAMP ); >;
 
     DynamicCombo( D_ENABLED, 0..1, Sys( PC ) );
+    DynamicCombo( D_SCANLINES, 0..1, Sys( PC ) );
+    DynamicCombo( D_NOISE, 0..1, Sys( PC ) );
+    DynamicCombo( D_CHROMATIC, 0..1, Sys( PC ) );
+
+    float g_fScanLinesIntensity <Default(1.0); >;
+    float g_fScanLinesSpeed <Default(1.0); >;
+    float g_fScanLinesSize <Default(1.0); >;
+
+    float g_fNoiseIntensity <Default(1.0); >;
+
+    float g_fChromaticAberrationIntensity <Default(1.0); >;
+
+    float g_fBrightness <Default(3.0); >;
+
+    
 
     struct PixelOutput
     {
@@ -88,15 +103,25 @@ PS
         o.vColor.a = 1.0f;
         o.vColor.rgb = vFrameBufferColor;
         //Chromatic abberation effect
+        #if D_ENABLED
+            float time = frac(g_flTime);
+            #if D_CHROMATIC
+                o.vColor.r = Tex2D( g_tColorBuffer, vScreenUv + Simplex2D(vScreenUv.xy*GetGlitchTime(3,time*g_fChromaticAberrationIntensity*10+5))/150).r;
+                o.vColor.g = Tex2D( g_tColorBuffer, vScreenUv + Simplex2D(vScreenUv.yx*GetGlitchTime(3.33,time*g_fChromaticAberrationIntensity*15+2.5))/150).g;
+                o.vColor.b = Tex2D( g_tColorBuffer, vScreenUv + Simplex2D(vScreenUv.xx*GetGlitchTime(3.66,time*g_fChromaticAberrationIntensity*20+1.5))/150).b;
+            #endif
+            #if D_SCANLINES
+                float3 scanlines = (g_fScanLinesIntensity/1000)*sin((g_fScanLinesSize*2000)*(((vScreenUv.y+(time*(g_fScanLinesSpeed/10)))+Simplex2D(vScreenUv.xy)*GetGlitchTime(4,0.05))/5));
+                o.vColor.rgb += scanlines;
+            #endif
+            #if D_NOISE
+                float3 fuzzynoise = FuzzyNoise(vScreenUv.xy/10+(time*0.04))*GetGlitchTime(4,g_fNoiseIntensity/400);
+                o.vColor.rgb += fuzzynoise;
+            #endif
+        #endif
 
-        o.vColor.r = Tex2D( g_tColorBuffer, vScreenUv + Simplex2D(vScreenUv.xy*GetGlitchTime(3,g_flTime*10+5))/150).r;
-        o.vColor.g = Tex2D( g_tColorBuffer, vScreenUv + Simplex2D(vScreenUv.yx*GetGlitchTime(3.33,g_flTime*15+2.5))/150).g;
-        
-        o.vColor.rgb += 0.001f*sin(g_flTime*((vScreenUv.y+(g_flTime/50)+Simplex2D(vScreenUv.xy)*GetGlitchTime(4,0.01))/5));
-        o.vColor.rgb += FuzzyNoise(vScreenUv.xy/150+(g_flTime/10))*sin(mod(g_flTime,4) <=1 ?0.001 : 0);
 
-        float2 v = vScreenUv/max(g_vViewportSize.x/100,g_vViewportSize.y/100);
-        o.vColor.r += 0.4*smoothstep(0.012, 0.010, distance(v ,float2(0.95, 0.53)));//*float(mod(g_flTime,2.0)<=1.0);
+        o.vColor.rgb *= g_fBrightness;
 
 
         

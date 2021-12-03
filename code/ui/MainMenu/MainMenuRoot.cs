@@ -1,4 +1,5 @@
 using System;
+using Gamelib.Extensions;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -9,6 +10,9 @@ namespace TerryDefense.UI {
 	public class MainMenuRoot : Panel {
 
 		Panel recordingcircle { get; set; }
+		Button ContinueButton { get; set; }
+
+		GlitchyPostProcess postProcess { get; set; }
 
 		private ModelEntity Planet;
 		private ModelEntity SpaceStation;
@@ -20,11 +24,6 @@ namespace TerryDefense.UI {
 			cam = Local.Pawn.Camera as MenuCamera;
 			cam.Position = new Vector3(-1000, 0, 0);
 			cam.FieldOfView = 25;
-
-
-
-
-
 		}
 
 		bool recording = true;
@@ -38,23 +37,35 @@ namespace TerryDefense.UI {
 					Rotation = Rotation.From(0, -30, 0),
 					Scale = 2f
 				};
+				Planet.SetupPhysicsFromModel(PhysicsMotionType.Keyframed);
 				SpaceStation = new("models/spacestation.vmdl") {
 					Position = new Vector3(-150, 50, 50),
 					Rotation = Rotation.From(0, 30, 30),
-					Scale = 0.1f
+					Scale = 0.1f,
+					Parent = Planet,
+					EnableShadowCasting = false
 				};
 				var l = Light.Point(new(-500, -500, 100), 5000, Color.White);
 				l.Falloff = 0;
 				PostProcess.Add(new GlitchyPostProcess());
+				postProcess = PostProcess.Get<GlitchyPostProcess>();
 
 			}
 			Planet.Rotation = Planet.Rotation.RotateAroundAxis(Vector3.Up, 0.04f);
-			SpaceStation.Rotation = SpaceStation.Rotation.RotateAroundAxis(Vector3.Up, -0.04f);
+			Planet.ResetInterpolation();
+			SpaceStation.Rotation = SpaceStation.Rotation.RotateAroundAxis(Vector3.Up, -0.2f);
+			SpaceStation.ResetInterpolation();
 			if(HasClass("submenu") && FocusOn.IsValid()) {
-				cam.Position = cam.Position.LerpTo(FocusOn.Position + Offset, 2f * Time.Delta);
+				var trace = Trace.Ray(cam.Position, FocusOn.Position + Offset).Radius(2).Ignore(FocusOn).Run();
+				Vector3 newOffset = new();
+				if(trace.Hit) {
+					newOffset = trace.Normal * 30f;
+				}
+				cam.Position = cam.Position.LerpTo(FocusOn.Position + Offset + newOffset, 2f * Time.Delta);
 			} else {
-				if(!HasClass("submenu")) {
+				if(!HasClass("submenu") && FocusOn != null) {
 					FocusOn = null;
+					postProcess.EnabledChromaticAberration = true;
 				}
 				cam.Position = cam.Position.LerpTo(new Vector3(-1000, 0, 0), 2f * Time.Delta);
 			}
@@ -66,11 +77,16 @@ namespace TerryDefense.UI {
 			}
 		}
 
+		public void Continue() {
+		}
+
 		public void NewGameMenu() {
 			AddClass("submenu");
 			AddChild(new NewGameMenu());
 			FocusOn = SpaceStation;
 			Offset = new Vector3(-100, 0, -5);
+
+			postProcess.EnabledChromaticAberration = false;
 
 		}
 		public void LoadGameMenu() {
@@ -79,6 +95,7 @@ namespace TerryDefense.UI {
 			FocusOn = SpaceStation;
 			Offset = new Vector3(-100, 0, -5);
 
+			postProcess.EnabledChromaticAberration = false;
 		}
 		public void OptionsMenu() {
 			AddClass("submenu");
@@ -86,6 +103,7 @@ namespace TerryDefense.UI {
 			FocusOn = Planet;
 			Offset = new Vector3(-200, 0, 0);
 
+			postProcess.EnabledChromaticAberration = false;
 		}
 	}
 	public class SubMenu : Panel {
@@ -103,29 +121,11 @@ namespace TerryDefense.UI {
 			Delete();
 		}
 	}
-
-	public class NewGameMenu : SubMenu {
-		public NewGameMenu() : base() {
-
-		}
-
-		public void NewGame() { }
-	}
-	public class LoadGameMenu : SubMenu {
-		public LoadGameMenu() : base() {
-
-		}
-
-		public void LoadGame() { }
-	}
 	public class OptionsMenu : SubMenu {
 		public OptionsMenu() : base() {
-
+			AddClass("optionsmenu");
 		}
 
 		public void Options() { }
-	}
-	public class GlitchyPostProcess : MaterialPostProcess {
-		public GlitchyPostProcess() : base("materials/postprocessing/mainmenuglitchy.vmat") { }
 	}
 }

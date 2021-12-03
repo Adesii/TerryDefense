@@ -26,10 +26,6 @@ namespace TerryDefense {
 		public override void Shutdown() {
 			if(Instance == this)
 				Instance = null;
-
-			foreach(var item in ConfigGlobals.All.OfType<Globals>()) {
-				item.Delete();
-			}
 		}
 
 		public override void ClientJoined(Client client) {

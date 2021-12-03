@@ -1,0 +1,21 @@
+@import "/ui/TDStyles.scss";
+.SaveList {
+  align-self: center;
+  position: absolute;
+  width: 90%;
+  height: 80%;
+  flex-direction: column;
+  background-color: rgba($PrimaryColor, 0.5);
+  .no-saves {
+    align-self: center;
+    background-color: $PrimaryWarnColor;
+    width: 70%;
+    height: 10%;
+    text-align: center;
+    font-size: 45px;
+    font-weight: 1000;
+    color: whitesmoke;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+}
