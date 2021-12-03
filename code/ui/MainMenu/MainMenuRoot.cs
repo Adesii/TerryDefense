@@ -3,7 +3,7 @@ using Gamelib.Extensions;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using TerryDefense.player.controllers;
+using TerryDefense.Player;
 
 namespace TerryDefense.UI {
 	[UseTemplate]
@@ -16,6 +16,7 @@ namespace TerryDefense.UI {
 
 		private ModelEntity Planet;
 		private ModelEntity SpaceStation;
+		private Light Sun;
 
 		private Entity FocusOn;
 		private Vector3 Offset;
@@ -45,8 +46,8 @@ namespace TerryDefense.UI {
 					Parent = Planet,
 					EnableShadowCasting = false
 				};
-				var l = Light.Point(new(-500, -500, 100), 5000, Color.White);
-				l.Falloff = 0;
+				Sun = Light.Point(new(-500, -500, 100), 5000, Color.White);
+				Sun.Falloff = 0;
 				PostProcess.Add(new GlitchyPostProcess());
 				postProcess = PostProcess.Get<GlitchyPostProcess>();
 
@@ -78,6 +79,14 @@ namespace TerryDefense.UI {
 		}
 
 		public void Continue() {
+		}
+
+		public override void OnDeleted() {
+			base.OnDeleted();
+			Planet.Delete();
+			SpaceStation.Delete();
+			Sun.Delete();
+			postProcess.Enabled = false;
 		}
 
 		public void NewGameMenu() {

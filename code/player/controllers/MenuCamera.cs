@@ -2,7 +2,7 @@ using System;
 using Sandbox;
 
 
-namespace TerryDefense.player.controllers {
+namespace TerryDefense.Player {
 	public class MenuCamera : Camera {
 		public override void Update() {
 

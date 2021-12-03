@@ -1,12 +1,11 @@
 using System;
 using Sandbox;
-using TerryDefense.player.controllers;
 using TerryDefense.UI;
 
 namespace TerryDefense.Player {
-	public class MainMenuPlayer : Entity {
+	public class MainMenuPlayer : PlayerPawn {
 
-		public void Respawn() {
+		public override void Respawn() {
 			Camera = new MenuCamera();
 			Transmit = TransmitType.Always;
 

@@ -6,12 +6,7 @@ namespace TerryDefense {
 	public partial class TerryDefenseGame : Game {
 		private GameState state = GameState.Menu;
 
-		public enum GameState {
-			Menu,
-			Base,
-			Ingame,
-			PostGame,
-		}
+
 
 		public GameState State {
 			get { return state; }
@@ -32,5 +27,12 @@ namespace TerryDefense {
 		}
 
 
+	}
+
+	public enum GameState {
+		Menu,
+		Base,
+		Ingame,
+		PostGame,
 	}
 }

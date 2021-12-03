@@ -1,0 +1,98 @@
+@import "/ui/TDStyles.scss";
+@import "styles/base.scss";
+
+.NewGame {
+  justify-content: center;
+  align-items: center;
+  .NewGame-Title {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    border-top: 1px solid $PrimaryColorHover;
+    border-bottom: 5px solid $PrimaryColorHover;
+  }
+  .SaveGame-Name-Container {
+    position: absolute;
+    top: 150px;
+    width: 50%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 20px;
+    border-top: 1px solid $PrimaryColorHover;
+    border-bottom: 5px solid $PrimaryColorHover;
+    .SaveGame-Name-Input {
+      :hover {
+        cursor: text;
+      }
+      width: 100%;
+      height: 100%;
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+      Label {
+        width: 100%;
+        position: absolute;
+      }
+    }
+    .SaveGame-Name-Label {
+      position: absolute;
+      left: 0;
+    }
+    .placeholder {
+      opacity: 0.8;
+    }
+  }
+  .Difficulty-Dropdown {
+    border-top: 1px solid $PrimaryColorHover;
+    border-bottom: 5px solid $PrimaryColorHover;
+    position: absolute;
+    top: 210px;
+    width: 50%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 20px;
+    .Difficulty-Dropdown-Label {
+      left: 0;
+      position: absolute;
+    }
+  }
+  .Create-Button {
+    border-radius: 10px;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    background-color: $PrimaryColorHover;
+    width: 250px;
+    height: 50px;
+    bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 30px;
+  }
+}
+
+.dropdown {
+  width: 50%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  flex-grow: 1;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  IconPanel {
+    font-family: MaterialIcons;
+  }
+}

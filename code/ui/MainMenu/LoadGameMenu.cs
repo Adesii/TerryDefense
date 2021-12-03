@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 using TerryDefense.systems;
@@ -11,8 +12,9 @@ namespace TerryDefense.UI {
 			ListPanel = Add.Panel("SaveList");
 			GetSaveList();
 		}
-		public void GetSaveList() {
-			if(SaveSystem.AllSaves == null)
+		public async void GetSaveList() {
+			await GameTask.DelayRealtime(100);
+			if(SaveSystem.AllSaves == null || SaveSystem.AllSaves.Count == 0)
 				SaveSystem.RefreshSaves();
 			if(SaveSystem.AllSaves.Count == 0) {
 				ListPanel.Add.Label("No saves found", "no-saves");
@@ -20,11 +22,10 @@ namespace TerryDefense.UI {
 			}
 
 			foreach(SaveFile data in SaveSystem.AllSaves) {
-				ListPanel.Add.Button(data.SaveGameName, "SaveGame", () => {
-					SaveSystem.Load(data);
+				ListPanel.AddChild(new SaveGameButton() {
+					SaveData = data
 				});
 			}
-
 		}
 	}
 }

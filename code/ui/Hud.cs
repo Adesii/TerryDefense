@@ -9,6 +9,8 @@ namespace TerryDefense.UI {
 		public TerryDefenseHud() {
 			Instance = this;
 			if(!IsClient) return;
+
+			RootPanel.StyleSheet.Load("/ui/TDStyles.scss");
 		}
 
 		public static void SetNewMainPanel(Panel panel) {

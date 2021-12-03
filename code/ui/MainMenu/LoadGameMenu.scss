@@ -19,3 +19,16 @@
     border-bottom-right-radius: 40px;
   }
 }
+SaveGameButton {
+  margin-bottom: 5px;
+  width: 100%;
+  min-height: 120px;
+  background-color: $PrimaryColor;
+  .label {
+    width: 100%;
+    font-size: 30px;
+    font-weight: 1000;
+    color: whitesmoke;
+    text-align: center;
+  }
+}

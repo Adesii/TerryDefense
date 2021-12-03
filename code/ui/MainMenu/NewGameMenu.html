@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="NewGameMenu.scss">
+<div class="NewGame">
+    <Text class="NewGame-Title">Create New Game</Text>
+    <div class="SaveGame-Name-Container">
+        <Text class="SaveGame-Name-Label">Name:</Text>
+        <TextEntry class="SaveGame-Name-Input" @value="SaveName" placeholder="Enter name" />
+    </div>
+    <div class="Difficulty-Dropdown">
+        <Text class="Difficulty-Dropdown-Label">Difficulty:</Text>
+        <select @value="Difficulty" class="Difficulty-Dropdown-Input">
+            <option selected value="0">Easy</option>
+            <option value="1">Medium</option>
+            <option value="2">Hard</option>
+        </select>
+    </div>
+        <Button class="Create-Button" text="Create" onclick="NewGame()" />
+</div>

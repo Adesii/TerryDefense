@@ -1,5 +1,10 @@
+@import "/styles/form.scss";
+
 $PrimaryColor: #46b1c9;
 $PrimaryColorHover: #3a9dbf;
+$PrimaryColorActive: #3a9dbf;
+
+$primary-fg: #fff;
 
 $SecondaryColor: #586974;
 $SecondaryColorHover: #4f5a60;
@@ -11,6 +16,165 @@ $PrimaryInfoColor: #7e47ff;
 
 $MiscColor: #28965a;
 
+.button {
+  cursor: pointer;
+}
+
+IconPanel {
+  font-family: MaterialIcons;
+}
+
 .Label {
   font-family: RobotoMono;
+}
+.popup-panel {
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: 5px 5px 30px rgba(black, 0.8);
+  flex-direction: column;
+  color: #cfdbf2;
+  transition: all 0.1s ease-out;
+  position: absolute;
+  z-index: 1000;
+  min-height: 10px;
+  min-width: 10px;
+  font-family: Poppins;
+  overflow: scroll;
+
+  &.medium {
+    max-width: 300px;
+  }
+
+  > .header {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 12px;
+    align-items: center;
+    background-color: rgba($primary, 0.4);
+    border-radius: 0 0 0 0;
+    color: white;
+    flex-shrink: 0;
+
+    .iconpanel {
+      margin-right: 10px;
+      font-size: 18px;
+      color: $primary-fg;
+    }
+  }
+
+  &.center-horizontal {
+    transform-origin: top center;
+  }
+
+  &.below-center {
+    transform: translateX(-50%);
+    transform-origin: 50% 0%;
+  }
+
+  &.above-left {
+    transform-origin: 0% 100%;
+  }
+
+  &:intro {
+    transform: scale(0);
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  &:outro {
+    opacity: 0;
+    transition: all 0.1s ease-in;
+    margin-top: 50px;
+    pointer-events: none;
+  }
+
+  &.below-stretch {
+    transform-origin: 0% 0%;
+
+    &:intro {
+      transform: scaleY(1);
+    }
+  }
+
+  &.success:outro {
+    opacity: 0;
+    transition: all 0.1s ease;
+    margin-top: 0px;
+    transform: scale(0.7);
+
+    &.center-horizontal {
+      transform: scale(1.4) translateX(-50%);
+      transform-origin: center;
+    }
+  }
+
+  > .arrow-top {
+    //background-color: #454e60;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    //transform: rotate( 45deg );
+    z-index: -10;
+  }
+
+  > .canvas {
+    flex-direction: column;
+  }
+
+  .information {
+    padding: 16px;
+    font-size: 12px;
+    opacity: 0.5;
+  }
+
+  .button {
+    background-color: rgba($PrimaryColor, 0.4);
+    border-radius: 0;
+    font-size: 13px;
+    padding: 8px 12px;
+    padding-right: 24px;
+    min-height: 10px;
+    border: 0;
+    flex-shrink: 0;
+
+    color: #cfdbf2;
+    font-weight: 400;
+    white-space: nowrap;
+
+    .iconpanel {
+      color: $PrimaryColor;
+    }
+
+    &:hover,
+    &.active {
+      color: white;
+      background-color: $PrimaryColorHover;
+      // Lol might be too much
+      //	box-shadow: 0px 0px 100px rgba( $primary, 0.2 );
+      //	text-shadow: 0px 0px 20px rgba( white, 0.2 );
+
+      .iconpanel {
+        color: $primary-fg;
+      }
+    }
+    &.active {
+      background-color: $PrimaryColorActive;
+    }
+
+    &:active {
+      color: $primary-fg;
+      background-color: rgba($PrimaryColorActive, 0.3);
+
+      .iconpanel {
+        color: $primary-fg;
+      }
+    }
+
+    &.disabled {
+      pointer-events: none;
+      opacity: 0.2;
+    }
+  }
 }

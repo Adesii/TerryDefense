@@ -14,6 +14,15 @@ namespace TerryDefense {
 				public StateEnded() : base(Name) { }
 			}
 
+			public class LoadedSaveFile : EventAttribute {
+				public static string Name = "Game.LoadedSaveFile";
+				public LoadedSaveFile() : base(Name) { }
+			}
+			public class SavedSaveFile : EventAttribute {
+				public static string Name = "Game.SavedSaveFile";
+				public SavedSaveFile() : base(Name) { }
+			}
+
 		}
 		public static class Base {
 			public class Attacked : EventAttribute {

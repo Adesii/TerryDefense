@@ -3,17 +3,13 @@ using System;
 using System.Linq;
 
 namespace TerryDefense.Player {
-	public partial class TerryDefensePlayer : Entity {
+	public partial class TerryDefensePlayer : PlayerPawn {
 		public new TDCamera Camera {
 			get => base.Camera as TDCamera;
 			set => base.Camera = value;
 		}
 
-		public virtual void InitialRespawn() {
-			Respawn();
-		}
-
-		public void Respawn() {
+		public override void Respawn() {
 			Camera = new TDCamera();
 			Transmit = TransmitType.Always;
 
@@ -23,6 +19,7 @@ namespace TerryDefense.Player {
 		}
 
 		public override void Simulate(Client cl) {
+			Debug.Log("Simulate");
 		}
 
 		public override void OnKilled() {

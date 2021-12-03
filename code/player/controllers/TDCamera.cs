@@ -41,7 +41,7 @@ namespace TerryDefense.Player {
 				velocity += Rotation.Right * panSpeed;
 
 			var lookAtPosition = (LookAt + velocity * Time.Delta);
-			var worldSize = TerryDefenseGame.Instance.WorldManager.WorldSize.Size.x;
+			var worldSize = WorldManager.Instance.CurrentWorld.WorldSize.Size.x;
 
 			lookAtPosition.x = lookAtPosition.x.Clamp(-worldSize, worldSize);
 			lookAtPosition.y = lookAtPosition.y.Clamp(-worldSize, worldSize);

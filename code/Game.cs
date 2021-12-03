@@ -20,8 +20,21 @@ namespace TerryDefense {
 		public TerryDefenseGame() {
 			Instance = this;
 			if(IsServer) {
+				WorldManager = new();
 				_ = new TerryDefenseHud();
 			}
+			if(Global.Lobby.GetData("Switching") == "true") {
+				SaveSystem.RefreshSaves();
+				Log.Error("Switching to new save");
+				var SaveName = Global.Lobby.GetData("SaveFile");
+				if(!string.IsNullOrEmpty(SaveName)) {
+					SaveSystem.Load(SaveSystem.AllSaves.Where(x => x.SaveGameName == SaveName).First());
+					return;
+				}
+			}
+
+
+
 		}
 		public override void Shutdown() {
 			if(Instance == this)
@@ -33,8 +46,28 @@ namespace TerryDefense {
 				client.Kick();
 				return;
 			}
+			PlayerPawn Player = null;
+			if(SaveSystem.SaveFile != null) {
+				switch(SaveSystem.SaveFile.GameState) {
+					case GameState.Menu:
+						Player = new MainMenuPlayer();
+						break;
+					case GameState.Base:
+						Player = new BasePlayer();
+						break;
+					case GameState.Ingame:
+						break;
+					case GameState.PostGame:
+						break;
+					default:
+						break;
+				}
+			} else {
+				Player = new MainMenuPlayer();
+			}
 
-			var Player = new MainMenuPlayer();
+
+
 			client.Pawn = Player;
 
 			Player.Respawn();
