@@ -13,13 +13,19 @@ namespace TerryDefense.entities {
 
 		[Net] public List<ModelEntity> Models { get; set; } = new List<ModelEntity>();
 
+		public Transform? CameraTransform {
+			get {
+				return GetAttachment("m_camera");
+			}
+		}
+
 		public override void Spawn() {
 			base.Spawn();
 			Transmit = TransmitType.Always;
 			SetupPhysicsFromAABB(PhysicsMotionType.Static, MinBounds, MaxBounds);
 			switch(Type) {
 				case RoomType.Empty:
-					Models.Add(new ModelEntity("models/rooms/empty.vmdl", this));
+					SetModel("models/rooms/empty.vmdl");
 					break;
 				case RoomType.Collapsed:
 					break;
@@ -34,22 +40,20 @@ namespace TerryDefense.entities {
 
 					Models.Add(MainRoomPlanet);
 
-					Models.Add(new("models/rooms/hq.vmdl") {
-						Position = Position,
-					});
+					SetModel("models/rooms/hq.vmdl");
 
 					break;
 				case RoomType.Research:
-					Models.Add(new ModelEntity("models/rooms/research.vmdl", this));
+					SetModel("models/rooms/research.vmdl");
 					break;
 				case RoomType.Armory:
-					Models.Add(new ModelEntity("models/rooms/armory.vmdl", this));
+					SetModel("models/rooms/armory.vmdl");
 					break;
 				case RoomType.Factory:
-					Models.Add(new ModelEntity("models/rooms/factory.vmdl", this));
+					SetModel("models/rooms/factory.vmdl");
 					break;
 				case RoomType.Intelligence:
-					Models.Add(new ModelEntity("models/rooms/empty.vmdl", this));
+					SetModel("models/rooms/empty.vmdl");
 					break;
 				default:
 					break;
@@ -85,10 +89,6 @@ namespace TerryDefense.entities {
 
 			DebugOverlay.Sphere(Position, 100f, col);
 			DebugOverlay.Box(WorldSpaceBounds.Mins + 10, WorldSpaceBounds.Maxs - 10, col);
-
-
-
-
 		}
 
 	}

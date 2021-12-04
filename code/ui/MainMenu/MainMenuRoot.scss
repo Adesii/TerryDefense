@@ -59,7 +59,7 @@ MainMenuRoot {
       width: 90px;
       left: -30px;
       height: 100%;
-      border: 5px solid rgb(31, 63, 99);
+      border: 5px solid $PrimaryColorBackground;
       padding-top: 10%;
       padding-bottom: 10%;
       justify-content: center;
@@ -71,7 +71,7 @@ MainMenuRoot {
         margin-left: 50px;
         width: 300px;
         height: 100px;
-        background-color: $SecondaryColor;
+        background-color: $PrimaryColorBackground;
         color: white;
         justify-content: center;
         align-items: center;
@@ -83,10 +83,10 @@ MainMenuRoot {
           color: black;
         }
         &.continue {
-          background-color: $SecondaryColorDark;
+          background-color: $PrimaryColorInactive;
           color: gray;
           &.hasSave {
-            background-color: $SecondaryColor;
+            background-color: $PrimaryColorBackground;
             &:hover {
               background-color: $PrimaryColorHover;
               color: black;
@@ -137,7 +137,6 @@ MainMenuRoot {
       align-items: center;
       text-align: center;
       position: absolute;
-      background-color: $PrimaryColorHover;
       width: 200px;
       height: 50px;
       right: 10px;
@@ -146,10 +145,9 @@ MainMenuRoot {
       .iconpanel {
         width: 50px;
         font-size: 40px;
-        font-family: MaterialIcons;
       }
     }
 
-    background-color: rgba($PrimaryColor, 0.3);
+    background-color: rgba($SecondaryColor, 0.3);
   }
 }

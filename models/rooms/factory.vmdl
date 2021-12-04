@@ -53,6 +53,21 @@
 					},
 				]
 			},
+			{
+				_class = "AttachmentList"
+				children = 
+				[
+					{
+						_class = "Attachment"
+						name = "m_camera"
+						parent_bone = ""
+						relative_origin = [ -550.757385, -530.804565, -143.480072 ]
+						relative_angles = [ 10.436705, 36.431057, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
+					},
+				]
+			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""

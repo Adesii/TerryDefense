@@ -1,32 +1,65 @@
 @import "/styles/form.scss";
 
-$PrimaryColor: #46b1c9;
-$PrimaryColorHover: #3a9dbf;
-$PrimaryColorActive: #3a9dbf;
+$PrimaryColor: #6a89cc;
+$PrimaryColorBackground: #3c6382;
+$PrimaryColorHover: #60a3bc;
+$PrimaryColorActive: #82ccdd;
+$PrimaryColorInactive: #22323f;
 
 $primary-fg: #fff;
 
-$SecondaryColor: #586974;
-$SecondaryColorHover: #4f5a60;
-$SecondaryColorDark: #222729;
+$SecondaryColor: #4a69bd;
+$SecondaryColorHover: #1e3799;
+$SecondaryColorDark: #0c2461;
 
-$PrimaryWarnColor: #9c0a07;
-$PrimaryWarnColorDark: rgba(151, 52, 27, 0.719);
-$PrimaryInfoColor: #7e47ff;
+$PrimaryWarnColor: #eb2f06;
+$PrimaryWarnColorDark: #b71540;
 
-$MiscColor: #28965a;
+$PrimaryInfoColor: #079992;
+$SecondaryInfoColor: #38ada9;
+
+$MiscColor: #78e08f;
+
+$FlatFlesh: #fad390;
+$SquashBlossom: #f6b93b;
+$IcelandPoppy: #fa983a;
+$CarrotOrange: #e58e26;
+
+$MelonMelody: #f8c291;
+$MandaringRed: #e55039;
+
+$ParadiseGreen: #b8e994;
+$AuroraGreen: #78e08f;
 
 .button {
   cursor: pointer;
 }
-
+Label,
+.label {
+  font-family: RobotoMono;
+}
+.iconpanel,
 IconPanel {
   font-family: MaterialIcons;
 }
 
-.label {
-  font-family: RobotoMono;
+Button {
+  border-radius: 20px;
+  width: 300px;
+  height: 100px;
+  background-color: $PrimaryColorBackground;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 30px;
+  transition: all 0.1s ease;
+  &:hover {
+    background-color: $PrimaryColorHover;
+    color: black;
+  }
 }
+
 .popup-panel {
   background-color: transparent;
   border-radius: 0;
