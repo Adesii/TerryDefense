@@ -23,7 +23,6 @@ namespace TerryDefense.UI {
 			switch(type.ToInt()) {
 				case 0:
 					m_camera.LookAt = BaseManager.Instance.GetMainRoom(entities.RoomType.HQ).Position;
-
 					break;
 				case 1:
 					m_camera.LookAt = BaseManager.Instance.GetMainRoom(entities.RoomType.Research).Position;
@@ -38,7 +37,7 @@ namespace TerryDefense.UI {
 				default:
 					break;
 			}
-			m_camera.ZoomLevel = 1f;
+			m_camera.ZoomLevel = 1.5f;
 		}
 
 	}

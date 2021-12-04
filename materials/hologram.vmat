@@ -1,0 +1,49 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "hologram.vfx"
+
+	//---- Noise Settings ----
+	F_CHROMATIC_ABBERRATION 1
+	F_NOISE 1
+	F_SCAN_LINES 1
+
+	//---- Brightness ----
+	g_fBrightness "1.969"
+
+	//---- Chromatic Abberration ----
+	g_fChromaticAberrationIntensity "4.249"
+
+	//---- Color ----
+	g_flModelTintAmount "1.000"
+	g_flTintColor "[0.090196 0.247059 0.564706 0.576471]"
+	g_vColorTint "[0.250980 0.733333 0.698039 0.098039]"
+
+	//---- Fade ----
+	g_flFadeExponent "1.000"
+
+	//---- Grid ----
+	GridSizeHorizontal "2.694"
+	GridSizeVertical "1.451"
+	GridThicknessHorizontal "0.207"
+	GridThicknessVertical "0.104"
+
+	//---- Material B ----
+	TextureColor "textures/planet/earth_col.png"
+
+	//---- Noise ----
+	g_fNoiseIntensity "0.777"
+
+	//---- ScanLines ----
+	g_fScanLinesIntensity "100.000"
+	g_fScanLinesSize "0.829"
+	g_fScanLinesSpeed "1.000"
+
+	//---- Texture Coordinates ----
+	g_nScaleTexCoordUByModelScaleAxis "0"
+	g_nScaleTexCoordVByModelScaleAxis "0"
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	g_vTexCoordScrollSpeed "[0.000 0.000]"
+}

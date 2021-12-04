@@ -1,0 +1,184 @@
+//=========================================================================================================================
+// Optional
+//=========================================================================================================================
+HEADER
+{
+	CompileTargets = ( IS_SM_50 && ( PC || VULKAN ) );
+	Description = "Hologram Shader";
+}
+
+//=========================================================================================================================
+// Optional
+//=========================================================================================================================
+FEATURES
+{
+    #include "common/features.hlsl"
+
+    Feature(F_SCAN_LINES,0..1,"Noise Settings");
+    Feature(F_NOISE,0..1,"Noise Settings");
+    Feature(F_CHROMATIC_ABBERRATION,0..1,"Noise Settings");
+}
+
+//=========================================================================================================================
+// Optional
+//=========================================================================================================================
+MODES
+{
+    VrForward();													// Indicates this shader will be used for main rendering
+    Depth( "vr_depth_only.vfx" ); 									// Shader that will be used for shadowing and depth prepass
+    ToolsVis( S_MODE_TOOLS_VIS ); 									// Ability to see in the editor
+    ToolsWireframe( "vr_tools_wireframe.vfx" ); 					// Allows for mat_wireframe to work
+	ToolsShadingComplexity( "vr_tools_shading_complexity.vfx" ); 	// Shows how expensive drawing is in debug view
+}
+
+//=========================================================================================================================
+COMMON
+{
+	#include "common/shared.hlsl"
+    #include "common/proceedural.hlsl"
+
+    #define S_TRANSLUCENT 1
+    #define BLEND_MODE_ALREADY_SET
+    #define COLOR_WRITE_ALREADY_SET
+}
+
+//=========================================================================================================================
+
+struct VertexInput
+{
+	#include "common/vertexinput.hlsl"
+};
+
+//=========================================================================================================================
+
+struct PixelInput
+{
+	#include "common/pixelinput.hlsl"
+};
+
+//=========================================================================================================================
+
+VS
+{
+	#include "common/vertex.hlsl"
+	//
+	// Main
+	//
+	PixelInput MainVs( INSTANCED_SHADER_PARAMS( VertexInput i ) )
+	{
+        float time = frac(g_flTime);
+        i.vPositionOs.x += Simplex2D(i.vPositionOs.xy*time* 0.5f) * 0.1f;
+        i.vPositionOs.y += Simplex2D(i.vPositionOs.yx*time* 0.5f) * 0.1f;
+        i.vPositionOs.z += Simplex2D(-i.vPositionOs.xy*time* 0.5f) * 0.1f;
+		PixelInput o = ProcessVertex( i );
+        
+		// Add your vertex manipulation functions here
+		return FinalizeVertex( o );
+	}
+}
+
+//=========================================================================================================================
+
+PS
+{
+
+    
+    
+    struct PixelOutput
+    {
+        float4 vColor : SV_Target0;
+    };
+
+    float GridSizeVertical <UiType(slider);Range( 0, 10 );Default(1);UiGroup("Grid");>;
+    float GridSizeHorizontal  <UiType(slider);Range( 0, 10 );Default(1);UiGroup("Grid");>;
+
+    float GridThicknessVertical  <UiType(slider);Range( 0, 10 );Default(1);UiGroup("Grid");>;
+    float GridThicknessHorizontal  <UiType(slider);Range( 0, 10 );Default(1);UiGroup("Grid");>;
+
+    StaticCombo( S_SCANLINES, F_SCAN_LINES, Sys( PC ) );
+    StaticCombo( S_NOISE, F_NOISE, Sys( PC ) );
+    StaticCombo( S_CHROMATIC, F_CHROMATIC_ABBERRATION, Sys( PC ) );
+    //#if D_SCANLINES
+        float g_fScanLinesIntensity <UiType(slider);Range( 0, 100 );Default(1.0); UiGroup("ScanLines"); >;
+        float g_fScanLinesSpeed <UiType(slider);Range( 0, 10 );Default(1.0);UiGroup("ScanLines"); >;
+        float g_fScanLinesSize <UiType(slider);Range( 0, 10 );Default(1.0); UiGroup("ScanLines");>;
+    //#endif
+    //#if D_NOISE
+        float g_fNoiseIntensity <UiType(slider);Range( 0, 10 );Default(1.0); UiGroup("Noise");>;
+    //#endif
+    //#if D_CHROMATIC
+        float g_fChromaticAberrationIntensity <UiType(slider);Range( 0, 10 );Default(1.0); UiGroup("Chromatic Abberration");>;
+    //#endif
+
+    float g_fBrightness <UiType(slider);Range( 0, 10 );Default(3.0); UiGroup("Brightness");>;
+    float4 g_flTintColor <UiType(color);Default4(1,1,1,1); UiGroup("Color");>;
+	//
+	// Main
+	//
+
+    SamplerState TextureFiltering < Filter( ANISOTROPIC ); MaxAniso( 8 ); >;
+    CreateInputTexture2D( TextureColor,            Srgb,   8, "",                 "_color",  "Material B,10/10", Default3( 1.0, 1.0, 1.0 ) );
+    CreateTexture2DWithoutSampler( g_tColor )  < Channel( RGB,  Box( TextureColor ), Srgb ); OutputFormat( BC7 ); SrgbRead( true ); >;
+
+    float mod(float x, float y)
+    {
+      return x - y * floor(x/y);
+    }
+
+    float GetGlitchTime(float time,  float maximum,float mininmum = 0,float smallerthan = 1)
+    {
+        return sin(mod(g_flTime,time) <=smallerthan ?maximum : mininmum);
+    }
+    float3 ChromaticAberration( Texture2D tColorBuffer, SamplerState sSampler, float2 vTexCoords, float3 vAmount )
+    {
+        return float3(
+            Tex2DS(tColorBuffer, sSampler, vTexCoords - vAmount.xx).r,
+            Tex2DS(tColorBuffer, sSampler, vTexCoords - vAmount.yy).g,
+            Tex2DS(tColorBuffer, sSampler, vTexCoords - vAmount.zz).b
+        );
+    }
+
+    RenderState( BlendEnable, true );
+    RenderState( SrcBlend, SRC_ALPHA );
+    RenderState( DstBlend, INV_SRC_ALPHA );
+
+	// Always write rgba
+	RenderState( ColorWriteEnable0, RGBA );
+	RenderState( FillMode, SOLID );
+    RenderState(AlphaToCoverageEnable, true);
+
+
+	PixelOutput MainPs( PixelInput i )
+	{
+		PixelOutput o;
+		/* m.Metalness = 1.3f; // Forces the object to be metalic */
+        o.vColor = i.vTextureCoords.x % (GridSizeVertical/100) <= (GridThicknessVertical/100) ? 1 : 0;
+        o.vColor += i.vTextureCoords.y % (GridSizeHorizontal/100) <= (GridThicknessHorizontal/100) ? 1 : 0;
+        o.vColor.rgb = clamp( o.vColor.rgb, 0, 1 );
+
+        float time = frac(g_flTime);
+
+        #if S_SCANLINES
+            float3 scanlines = (g_fScanLinesIntensity/1000)*sin((g_fScanLinesSize*2000)*(((i.vTextureCoords.y+(time*(g_fScanLinesSpeed/10))))/5));
+            o.vColor.rgb += scanlines*g_flTintColor.rgb;
+        #endif
+        #if S_NOISE
+            float3 fuzzynoise = FuzzyNoise(i.vTextureCoords.xy+(time*0.04))*g_fNoiseIntensity;
+            o.vColor.rgb += fuzzynoise*g_flTintColor.rgb;
+        #endif
+
+        #if S_CHROMATIC
+            float3 chromaticab = ChromaticAberration(g_tColor,TextureFiltering,i.vTextureCoords.xy,float3(sin(g_flTime*GetGlitchTime(2,1,10))*0.01f,cos(g_flTime*GetGlitchTime(2,2,3))*0.015f,0))*g_fChromaticAberrationIntensity;
+            o.vColor.rgb += chromaticab;
+        #endif
+
+        o.vColor.rgb += saturate(Tex2DS( g_tColor,TextureFiltering, i.vTextureCoords ).rgb ) *g_fBrightness;
+        o.vColor.rgb *= g_fBrightness;
+        o.vColor.rgba *= g_flTintColor;
+        o.vColor.a = g_flTintColor.a;
+
+        
+
+		return o;
+	}
+}

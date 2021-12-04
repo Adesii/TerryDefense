@@ -28,7 +28,7 @@ namespace TerryDefense {
 				SaveSystem.RefreshSaves();
 				Log.Error("Switching to new save");
 				var SaveName = Global.Lobby.GetData("SaveFile");
-				if(!string.IsNullOrEmpty(SaveName)) {
+				if(!string.IsNullOrEmpty(SaveName) && SaveSystem.AllSaves != null) {
 					SaveSystem.Load(SaveSystem.AllSaves.Where(x => x.SaveGameName == SaveName).First());
 					return;
 				}

@@ -14,23 +14,16 @@
 						remaps = 
 						[
 							{
-								from = "planetmaterial.vmat"
-								to = "materials/earth.vmat"
+								from = "guide.vmat"
+								to = "materials/policedepartment/tileable/t_linoleumfloor.vmat"
+							},
+							{
+								from = "hq.vmat"
+								to = "materials/99matsvol2/t_tiles_floor_02.vmat"
 							},
 						]
 						use_global_default = false
 						global_default_material = ""
-					},
-					{
-						_class = "MaterialGroup"
-						name = "holographic"
-						remaps = 
-						[
-							{
-								from = "materials/earth.vmat"
-								to = "materials/hologram.vmat"
-							},
-						]
 					},
 				]
 			},
@@ -40,7 +33,7 @@
 				[
 					{
 						_class = "RenderMeshFile"
-						filename = "models/Earth.dmx"
+						filename = "models/rooms/factory.dmx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0
@@ -53,23 +46,10 @@
 							exclude_by_default = true
 							exception_list = 
 							[
-								"Sphere",
+								"empty",
+								"fact",
 							]
 						}
-					},
-				]
-			},
-			{
-				_class = "PhysicsShapeList"
-				children = 
-				[
-					{
-						_class = "PhysicsShapeSphere"
-						parent_bone = ""
-						surface_prop = "default"
-						collision_prop = "default"
-						radius = 40.683964
-						center = [ 0.0, 0.0, 0.0 ]
 					},
 				]
 			},
