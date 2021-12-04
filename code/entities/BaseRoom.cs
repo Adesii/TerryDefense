@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Hammer;
 using Sandbox;
-
+using TerryDefense.systems.Base;
 
 namespace TerryDefense.entities {
 	[Library("td_room"), BoundsHelper(nameof(MinBounds), nameof(MaxBounds), true, true)]
@@ -11,7 +11,7 @@ namespace TerryDefense.entities {
 		[Property, Net] public Vector3 MinBounds { get; set; } = new Vector3(-100);
 		[Property, Net] public Vector3 MaxBounds { get; set; } = new Vector3(100);
 
-		[Net] public List<ModelEntity> Models { get; set; } = new List<ModelEntity>();
+		[Net] public RoomData RoomData { get; set; }
 
 		public Transform? CameraTransform {
 			get {
@@ -30,33 +30,36 @@ namespace TerryDefense.entities {
 				case RoomType.Collapsed:
 					break;
 				case RoomType.HQ:
-					ModelEntity MainRoomPlanet = new("models/earth.vmdl") {
-						Position = Position,
-						Scale = 7,
-						EnableShadowCasting = false,
-					};
-					MainRoomPlanet.RenderColor = Color.White.WithAlpha(0.9f);
-					MainRoomPlanet.SetMaterialGroup("holographic");
-
-					Models.Add(MainRoomPlanet);
-
 					SetModel("models/rooms/hq.vmdl");
-
+					RoomData = new HQ();
 					break;
 				case RoomType.Research:
 					SetModel("models/rooms/research.vmdl");
+					RoomData = new Research();
 					break;
 				case RoomType.Armory:
 					SetModel("models/rooms/armory.vmdl");
+					RoomData = new Armory();
 					break;
 				case RoomType.Factory:
 					SetModel("models/rooms/factory.vmdl");
+					RoomData = new Factory();
 					break;
 				case RoomType.Intelligence:
 					SetModel("models/rooms/empty.vmdl");
 					break;
 				default:
 					break;
+			}
+			if(RoomData != null) {
+				RoomData.Room = this;
+				RoomData.Created();
+			}
+		}
+		[Event.Tick]
+		public void RoomTick() {
+			if(RoomData != null) {
+				RoomData.Tick();
 			}
 		}
 		[Event.Tick.Server]

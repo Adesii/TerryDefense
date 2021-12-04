@@ -21,24 +21,18 @@ namespace TerryDefense.UI {
 			set {
 				if(m_Room == value) return;
 				bool shouldTeleport = m_Room != null;
-				m_Room = value;
-				if(m_Room != null) {
-					Transform? transform = m_Room.CameraTransform;
+				if(value != null) {
+					Transform? transform = value.CameraTransform;
 					if(transform.HasValue)
 						m_camera.SetTarget(transform.Value, shouldTeleport);
 				} else {
 					m_camera.ClearTarget();
+					m_Room.RoomData.Deselected();
 				}
+				m_Room = value;
 			}
 		}
 		public BaseHudRoot() : base() {
-			var room = BaseManager.Instance.GetMainRoom(RoomType.HQ);
-			if(m_camera == null)
-				m_camera = (Local.Pawn as BasePlayer).Camera;
-			if(room != null) {
-				m_camera.SetTarget(room.Transform);
-				m_camera.ClearTarget();
-			}
 
 		}
 
@@ -74,19 +68,28 @@ namespace TerryDefense.UI {
 
 		public override void Tick() {
 			base.Tick();
-			var trace = Trace.Ray(Input.Cursor, 10000).Run();
-			if(trace.Hit && trace.Entity is BaseRoom room) {
-				SetHoverPanelTarget(room);
-				if(Input.Pressed(InputButton.Attack1)) {
-					SelectedRoom = room;
+			if(m_camera == null) {
+				var room = BaseManager.Instance.GetMainRoom(RoomType.HQ);
+				if(m_camera == null)
+					m_camera = (Local.Pawn as BasePlayer).Camera;
+				if(room != null) {
+					m_camera.SetTarget(room.Transform);
+					m_camera.ClearTarget();
 				}
+			}
+			var trace = Trace.Ray(Input.Cursor, 10000).Run();
+			if(trace.Hit && trace.Entity is BaseRoom Room) {
+				SetHoverPanelTarget(Room);
 			} else {
 				SetHoverPanelTarget(null);
 			}
+
 		}
 		protected override void OnClick(MousePanelEvent e) {
 			base.OnClick(e);
 			if(e.Target == this) {
+				if(SelectedRoom == null && m_Hovered_Room != null)
+					m_Hovered_Room.RoomData?.Selected();
 				SelectedRoom = m_Hovered_Room;
 			}
 		}

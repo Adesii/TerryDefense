@@ -11,14 +11,12 @@ namespace TerryDefense.systems {
 
 		[Net] public List<BaseRoom> AllRooms { get; protected set; }
 
-		[Net] BaseRoom HQ { get; set; }
 		public override void Destroy() {
 
 		}
 
 		public override void Init() {
 			AllRooms = Entity.All.OfType<BaseRoom>().ToList();
-			HQ = GetMainRoom(RoomType.HQ);
 		}
 
 		public BaseRoom GetMainRoom(RoomType type) {
@@ -27,10 +25,7 @@ namespace TerryDefense.systems {
 		}
 
 		public override void Update() {
-			if(Host.IsServer) {
-				if(HQ.IsValid() && HQ.Models.Count > 0 && HQ.Models[0].IsValid())
-					HQ.Models[0].Rotation = HQ.Models[0].Rotation.RotateAroundAxis(Vector3.Up, 0.3f);
-			}
+
 
 
 		}
