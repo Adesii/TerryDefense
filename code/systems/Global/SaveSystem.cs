@@ -63,6 +63,13 @@ namespace TerryDefense.systems {
 		}
 		public static void Load(SaveFile save) {
 			m_savefile = save;
+			if(m_savefile == null) {
+				Log.Error("Failed to load save file");
+				return;
+			}
+			if(m_savefile.WorldData != null && m_savefile.WorldData.MapFile != Global.MapName) {
+				WorldManager.LoadWorld(m_savefile.WorldData);
+			}
 			foreach(var item in Entity.All.Where(x => x is ISaveable)) {
 				var saveable = item as ISaveable;
 				saveable.Load(ref save);
@@ -85,6 +92,8 @@ namespace TerryDefense.systems {
 		public int Difficulty { get; set; }
 
 		public string SaveGameCurrentMission { get; set; }
+
+		public WorldData WorldData { get; set; }
 
 		public Dictionary<string, SaveData> SaveData { get; set; }
 	}

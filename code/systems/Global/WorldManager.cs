@@ -8,13 +8,13 @@ namespace TerryDefense.systems {
 		public WorldData CurrentWorld { get; protected set; }
 
 
-		public void LoadWorld(WorldData world) {
-			CurrentWorld = world;
+		public static void LoadWorld(WorldData world) {
+			Instance.CurrentWorld = world;
 			Global.Lobby.SetData("Switching", "true");
 			Global.Lobby.SetData("SaveFile", SaveSystem.SaveFile.SaveGameName);
 
-			if(CurrentWorld.MapFile != Global.MapName) {
-				ChangeWorld(CurrentWorld.MapFile);
+			if(Instance.CurrentWorld.MapFile != Global.MapName) {
+				ChangeWorld(Instance.CurrentWorld.MapFile);
 			}
 		}
 		[ServerCmd]

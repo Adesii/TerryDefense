@@ -20,7 +20,7 @@ namespace TerryDefense.UI {
 				GameState = GameState.Base
 			});
 			TerryDefenseHud.Instance.RootPanel.DeleteChildren();
-			WorldManager.Instance.LoadWorld(TemplateWorldData.BaseWorld);
+			WorldManager.LoadWorld(TemplateWorldData.BaseWorld);
 		}
 	}
 }

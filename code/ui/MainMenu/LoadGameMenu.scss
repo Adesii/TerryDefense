@@ -31,4 +31,7 @@ SaveGameButton {
     color: whitesmoke;
     text-align: center;
   }
+  &:hover {
+    background-color: $PrimaryColorHover;
+  }
 }
