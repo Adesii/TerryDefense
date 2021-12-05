@@ -1,0 +1,61 @@
+@import "/ui/TDStyles.scss";
+
+.BaseHud {
+  opacity: 1;
+  pointer-events: all;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  .MenuBar {
+    position: absolute;
+    bottom: 0;
+    height: 75px;
+    width: 70%;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border: 5px solid $PrimaryColorBackground;
+    border-bottom: none;
+    background-color: rgba($PrimaryColor, 0.2);
+    justify-content: space-between;
+    .item {
+      margin-left: 40px;
+      margin-right: 40px;
+      height: 80px;
+      width: 250px;
+      transform: translateY(-60%);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 30%;
+      font-weight: 1000;
+    }
+  }
+
+  .backButton {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    width: 70px;
+    height: 70px;
+    .iconpanel {
+      font-size: 100px;
+      color: $SecondaryColorDark;
+    }
+  }
+
+  &.BlackOut {
+    .BlackScreen {
+      opacity: 1;
+    }
+  }
+}
+.hover-panel {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border: 20px solid $PrimaryColorActive;
+  border-radius: 10px;
+  &.hidden {
+    opacity: 0;
+  }
+}

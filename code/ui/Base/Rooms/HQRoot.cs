@@ -11,10 +11,10 @@ namespace TerryDefense.UI {
 		public Panel MissionList { get; set; }
 
 		public HQRoot() {
-			Log.Error($"AvailableMissions.Count: {TerryDefenseGame.Instance.MissionManager.AvailableMissions.Count}");
+			Debug.Error($"AvailableMissions.Count: {TerryDefenseGame.Instance.MissionManager.AvailableMissions.Count}");
 			foreach(var item in TerryDefenseGame.Instance.MissionManager.AvailableMissions) {
 				MissionList.AddChild(new MissionButton(item));
-				Log.Error("Added mission " + item.Title);
+				Debug.Error("Added mission " + item.Title);
 			}
 		}
 

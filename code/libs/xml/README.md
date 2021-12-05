@@ -6,7 +6,7 @@
 XmlParser parser = new XmlParser( InputType.File, "path/to/file.xml" );
 XmlDocument document = parser.Parse();
 
-Log.Info( document.RootNode.GetChild( "TagName" ).Content );
+Debug.Log( document.RootNode.GetChild( "TagName" ).Content );
 ```
 
 ## License

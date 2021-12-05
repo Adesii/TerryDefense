@@ -5,15 +5,6 @@
 [
 	title(string) : "Title" :  : ""
 	description(string) : "Description" :  : ""
-	details(struct:TerryDefense_MissionDetails) : "Details" :  : ""
-	requirements(array:struct:TerryDefense_Requirement) : "Requirements" :  : ""
-]
-
-//
-// TerryDefense.MissionDetails
-//
-@struct = TerryDefense_MissionDetails
-[
 	mapfile(string) { editor = "AssetBrowse(vmap)" } : "Map File" :  : ""
 	tilefile(string) : "Tile File" :  : "data/maps/ will be prefixed to this. making it easier to select the right map just by name"
 	scope(choices) : "Scope" : 2 : "" =
@@ -23,6 +14,7 @@
 		2 : "Ingame"
 		3 : "Post Game"
 	]
+	requirements(array:struct:TerryDefense_Requirement) : "Requirements" :  : ""
 ]
 
 //

@@ -13,10 +13,27 @@
     width: 90%;
     height: 90%;
     background-color: rgba($PrimaryColorBackground, 0.7);
-    .MissionButton {
+    flex-direction: column;
+    MissionButton {
       width: 100%;
-      min-height: 300px;
+      min-height: 100px;
       background-color: $PrimaryColor;
+      flex-direction: column;
+      .title {
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+      }
+      .description {
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+      }
+      &:hover {
+        background-color: $PrimaryColorHover;
+      }
     }
   }
 }

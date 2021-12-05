@@ -17,7 +17,7 @@ namespace TerryDefense.systems {
 				try {
 					AllSaves.Add(FileSystem.Data.ReadJson<SaveFile>("saves/" + item));
 				} catch(System.Exception) {
-					Log.Error($"Failed to load save file {item}");
+					Debug.Error($"Failed to load save file {item}");
 				}
 			}
 			AllSaves = AllSaves.OrderBy(e => e.LastSaveTime).Reverse().ToList();
@@ -25,7 +25,7 @@ namespace TerryDefense.systems {
 
 		public static SaveFile CreateNewSave(CreateSaveFile saveFile) {
 			if(AllSaves.Any(x => x.SaveGameName == saveFile.SaveGameName)) {
-				Log.Error($"Save file with name {saveFile.SaveGameName} already exists");
+				Debug.Error($"Save file with name {saveFile.SaveGameName} already exists");
 				return null;
 			}
 			m_savefile = new SaveFile {
@@ -39,7 +39,7 @@ namespace TerryDefense.systems {
 				SaveData = new()
 			};
 
-			Log.Info($"Created new save file {m_savefile.saveid}");
+			Debug.Log($"Created new save file {m_savefile.saveid}");
 			Save();
 			RefreshSaves();
 
@@ -52,6 +52,11 @@ namespace TerryDefense.systems {
 		public static void Save() {
 			if(m_savefile == null) {
 				CreateNewSave(new());
+			} else {
+				m_savefile.LastSaveTime = DateTime.Now;
+				m_savefile.GameState = Instance.State;
+				m_savefile.TimePlayed = (m_savefile.LastSaveTime - m_savefile.OriginalSaveTime).Seconds;
+				m_savefile.WorldData = WorldManager.Instance.CurrentWorld;
 			}
 			foreach(var item in Entity.All.Where(x => x is ISaveable)) {
 				var saveable = item as ISaveable;
@@ -60,19 +65,21 @@ namespace TerryDefense.systems {
 			FileSystem.Data.CreateDirectory("saves");
 			try {
 				FileSystem.Data.WriteJson($"saves/{m_savefile.SaveGameName}.json", m_savefile);
-			} catch(System.Exception) {
-				Log.Error($"Failed to save save file {m_savefile.SaveGameName}");
+			} catch(System.Exception e) {
+				Debug.Error($"Failed to save save file {m_savefile.SaveGameName}");
+				Debug.Error(e);
 			}
 		}
 		public static void Load(SaveFile save) {
 			m_savefile = save;
+			Instance.State = m_savefile.GameState;
+			Debug.Error($"Loaded save file {m_savefile.SaveGameName}");
+			Debug.Error($"Saved State: {m_savefile.GameState}");
 			if(m_savefile == null) {
-				Log.Error("Failed to load save file");
+				Debug.Error("Failed to load save file");
 				return;
 			}
-			if(m_savefile.WorldData != null && m_savefile.WorldData.MapFile != Global.MapName) {
-				WorldManager.LoadWorld(m_savefile.WorldData);
-			}
+
 			foreach(var item in Entity.All.Where(x => x is ISaveable)) {
 				var saveable = item as ISaveable;
 				saveable.Load(ref save);

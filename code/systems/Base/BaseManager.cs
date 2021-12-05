@@ -20,8 +20,8 @@ namespace TerryDefense.systems {
 		}
 
 		public BaseRoom GetMainRoom(RoomType type) {
-			var room = AllRooms.First(r => r.Type == type);
-			return room;
+			if(AllRooms.Count == 0) return null;
+			return AllRooms?.First(r => r.Type == type);
 		}
 
 		public override void Update() {

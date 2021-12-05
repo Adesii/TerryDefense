@@ -4,11 +4,6 @@
 	{
 		objective = 
 		{
-			details = 
-			{
-				mapfile = "maps/level1.vmap"
-				tilefile = "testmap.tmx"
-			}
 			title = "Tutorial Testing Stuff"
 			description = "This is a basic Level to test map generation ontop of just testing out missions"
 			requirements = 
@@ -23,6 +18,8 @@
 					event = "tower_gun"
 				},
 			]
+			mapfile = "maps/level1.vmap"
+			tilefile = "testmap"
 		}
 	}
 }

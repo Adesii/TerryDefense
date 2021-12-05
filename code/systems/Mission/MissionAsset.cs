@@ -17,16 +17,22 @@ namespace TerryDefense {
 			base.PostLoad();
 			if(!_all.Contains(Objective))
 				_all.Add(Objective);
-			Log.Error($"Mission {Name} loaded.");
+			Debug.Error($"Mission {Name} loaded.");
 			MissionManager.AddAvailableMission(Objective);
+
 		}
 	}
 
-	public struct Mission {
+	public class Mission {
 		public string Title { get; set; }
 		public string Description { get; set; }
 
-		public MissionDetails Details { get; set; }
+		[ResourceType("vmap")] public string MapFile { get; set; }
+		/// <summary>
+		/// data/maps/ will be prefixed to this. making it easier to select the right map just by name
+		/// </summary>
+		public string TileFile { get; set; }
+		public GameState Scope { get; set; } = GameState.Ingame;
 		public List<Requirement> Requirements { get; set; }
 
 		public ObjectiveStatus Status;
@@ -61,15 +67,6 @@ namespace TerryDefense {
 				}
 			}
 		}
-	}
-	public class MissionDetails {
-		[ResourceType("vmap")] public string MapFile { get; set; }
-		/// <summary>
-		/// data/maps/ will be prefixed to this. making it easier to select the right map just by name
-		/// </summary>
-		public string TileFile { get; set; }
-		public GameState Scope { get; set; } = GameState.Ingame;
-
 	}
 
 	public enum ObjectiveStatus {

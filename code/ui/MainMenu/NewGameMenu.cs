@@ -13,7 +13,8 @@ namespace TerryDefense.UI {
 
 
 		public void NewGame() {
-			Log.Error($"Creating new game with name {SaveName} and difficulty {Difficulty}");
+			Debug.Error($"Creating new game with name {SaveName} and difficulty {Difficulty}");
+			TerryDefenseGame.Instance.State = GameState.Base;
 			SaveSystem.CreateNewSave(new() {
 				SaveGameName = SaveName,
 				Difficulty = Difficulty,

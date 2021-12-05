@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Sandbox;
 
 
@@ -7,25 +8,28 @@ namespace TerryDefense.systems {
 		public static WorldManager Instance => TerryDefenseGame.Instance.WorldManager;
 		public WorldData CurrentWorld { get; protected set; }
 
+		public BBox WorldSize { get; set; } = new BBox(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
+
 
 		public static void LoadWorld(WorldData world) {
 			Instance.CurrentWorld = world;
-			SaveSystem.Save();
 			Global.Lobby.SetData("Switching", "true");
-			Global.Lobby.SetData("SaveFile", SaveSystem.SaveFile.SaveGameName);
+			Global.Lobby.SetData("SaveFile", SaveSystem.SaveFile.saveid.ToString());
 
-			if(Instance.CurrentWorld.MapFile != Global.MapName) {
+			if(Instance.CurrentWorld.MapFile != Global.MapName && !string.IsNullOrEmpty(Instance.CurrentWorld.MapFile)) {
+				SaveSystem.Save();
 				ChangeWorld(Instance.CurrentWorld.MapFile);
 			}
 		}
 		[ServerCmd]
 		public static void ChangeWorld(string file) {
-			Global.ChangeLevel(file);
+			string sterl = StringX.NormalizeFilename(file);
+			sterl = Path.GetFileNameWithoutExtension(sterl);
+			Global.ChangeLevel(sterl);
 		}
 	}
-
-	public partial class WorldData : BaseNetworkable {
-		public BBox WorldSize { get; set; } = new BBox(Vector3.One * -5000f, Vector3.One * 5000f);
+	[System.Serializable]
+	public partial class WorldData {
 		public string MapFile { get; set; } = "empty";
 		public string TileFile { get; set; } = "";
 
@@ -34,8 +38,7 @@ namespace TerryDefense.systems {
 	public static class TemplateWorldData {
 		public static WorldData BaseWorld => new() {
 			MapFile = "base",
-			TileFile = "base",
-			WorldSize = new BBox(0, 0)
+			TileFile = "base"
 		};
 	}
 }

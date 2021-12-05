@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TerryDefense.systems {
 	public class MissionManager : MechanicManager, ISaveable {
 
-		public static MissionManager Instance => TerryDefenseGame.Instance.MissionManager;
+		public static MissionManager Instance => TerryDefenseGame.Instance?.MissionManager;
 
 		public List<Mission> AvailableMissions { get; private set; } = new();
 
@@ -17,12 +17,16 @@ namespace TerryDefense.systems {
 		public override void Init() {
 
 		}
-
-		internal static void StartMission(Mission item) {
+		public static void StartMission(Mission item) {
 			AddMission(item);
+			TerryDefenseGame.Instance.State = GameState.Ingame;
+			if(string.IsNullOrEmpty(item.MapFile) || string.IsNullOrEmpty(item.TileFile)) {
+				return;
+			}
+
 			WorldManager.LoadWorld(new() {
-				MapFile = item.Details.MapFile,
-				TileFile = item.Details.TileFile,
+				MapFile = item.MapFile,
+				TileFile = item.TileFile,
 			});
 		}
 
@@ -30,6 +34,9 @@ namespace TerryDefense.systems {
 
 		}
 		public static void AddAvailableMission(Mission item) {
+			if(Instance == null) {
+				return;
+			}
 			if(Instance.AvailableMissions.Contains(item) || Instance.ActiveMissions.Contains(item) || Instance.CompletedMissions.Contains(item)) {
 				return;
 			}
@@ -42,7 +49,7 @@ namespace TerryDefense.systems {
 		public static void CheckMissions(MissionType type, string eventname) {
 			if(Instance == null) return;
 			foreach(Mission mission in Instance.ActiveMissions) {
-				if(mission.Details.Scope == TerryDefenseGame.Instance.State) {
+				if(mission.Scope == TerryDefenseGame.Instance.State) {
 					mission.CheckMission(type, eventname);
 				}
 			}

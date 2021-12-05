@@ -11,6 +11,11 @@ namespace TerryDefense {
 
 			Sandbox.Internal.GlobalGameNamespace.Log.Info($"[{(Host.IsClient ? "CL" : "SV")}] {obj}");
 		}
+		public static void Error(object obj) {
+			if(!Debug.Enabled) return;
+
+			Sandbox.Internal.GlobalGameNamespace.Log.Error($"[{(Host.IsClient ? "CL" : "SV")}] {obj}");
+		}
 
 		public static void TraceResult(TraceResult traceResult, float duration = 0) {
 			if(!Debug.Enabled) return;

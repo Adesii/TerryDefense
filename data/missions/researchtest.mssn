@@ -6,11 +6,6 @@
 		{
 			title = "idk"
 			description = "asadsasdasd"
-			details = 
-			{
-				mapfile = ""
-				scope = "1"
-			}
 			requirements = 
 			[
 				{
