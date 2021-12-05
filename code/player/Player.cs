@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Linq;
+using TerryDefense.systems;
 using TerryDefense.UI;
 
 namespace TerryDefense.Player {
@@ -15,6 +16,8 @@ namespace TerryDefense.Player {
 
 			LifeState = LifeState.Alive;
 			Velocity = Vector3.Zero;
+
+			WorldManager.InitWorld();
 		}
 
 		public override void ClientSpawn() {

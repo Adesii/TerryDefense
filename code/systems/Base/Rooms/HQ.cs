@@ -14,7 +14,7 @@ namespace TerryDefense.systems.Base {
 		public override void Created() {
 			base.Created();
 
-			Debug.Log("HQ Created");
+			Debug.Info("HQ Created");
 			MainRoomPlanet = new("models/earth.vmdl") {
 				Position = Room.Position,
 				Scale = 7,

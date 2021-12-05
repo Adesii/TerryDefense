@@ -22,6 +22,12 @@ namespace TerryDefense.systems {
 			}
 			AllSaves = AllSaves.OrderBy(e => e.LastSaveTime).Reverse().ToList();
 		}
+		public static bool ReloadSave() {
+			if(string.IsNullOrEmpty(Global.Lobby.GetData("SaveFile"))) return false;
+			RefreshSaves();
+			m_savefile = AllSaves.Where(e => e.saveid == Guid.Parse(Global.Lobby.GetData("SaveFile"))).First();
+			return true;
+		}
 
 		public static SaveFile CreateNewSave(CreateSaveFile saveFile) {
 			if(AllSaves.Any(x => x.SaveGameName == saveFile.SaveGameName)) {
@@ -39,7 +45,7 @@ namespace TerryDefense.systems {
 				SaveData = new()
 			};
 
-			Debug.Log($"Created new save file {m_savefile.saveid}");
+			Debug.Info($"Created new save file {m_savefile.saveid}");
 			Save();
 			RefreshSaves();
 

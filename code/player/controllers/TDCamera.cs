@@ -27,7 +27,7 @@ namespace TerryDefense.Player {
 		}
 		public void ZoomBy(float amount) {
 			ZoomLevel -= amount * 0.5f;
-			ZoomLevel = ZoomLevel.Clamp(1f, 8f);
+			ZoomLevel = ZoomLevel.Clamp(1f, 100f);
 		}
 		public override void Update() {
 			if(Local.Pawn is not TerryDefensePlayer player) return;

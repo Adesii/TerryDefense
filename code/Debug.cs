@@ -6,7 +6,7 @@ namespace TerryDefense {
 		[ConVar.Replicated("debug_enable")]
 		public static bool Enabled { get; set; }
 
-		public static void Log(object obj) {
+		public static void Info(object obj) {
 			if(!Debug.Enabled) return;
 
 			Sandbox.Internal.GlobalGameNamespace.Log.Info($"[{(Host.IsClient ? "CL" : "SV")}] {obj}");

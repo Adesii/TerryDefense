@@ -57,7 +57,7 @@ namespace TerryDefense {
 
 			PlayerPawn Player = null;
 			if(SaveSystem.SaveFile != null) {
-				Debug.Log($"Loading save file {SaveSystem.SaveFile.GameState}");
+				Debug.Info($"Loading save file {SaveSystem.SaveFile.GameState}");
 				switch(SaveSystem.SaveFile.GameState) {
 					case GameState.Menu:
 						Player = new MainMenuPlayer();
