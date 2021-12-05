@@ -59,6 +59,8 @@ namespace TerryDefense {
 						GameplayManager = new BaseManager();
 						break;
 					case GameState.Ingame:
+						Player = new TerryDefensePlayer();
+						GameplayManager = new MissionManager();
 						break;
 					case GameState.PostGame:
 						break;
