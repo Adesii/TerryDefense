@@ -16,6 +16,7 @@ namespace TerryDefense {
 		public static TerryDefenseGame Instance { get; protected set; }
 		[Net] public WorldManager WorldManager { get; protected set; }
 		[Net] public MechanicManager GameplayManager { get; protected set; }
+		[Net] public MissionManager MissionManager { get; protected set; } = new();
 
 		[Net] protected bool PlayerJoined { get; set; }
 		public TerryDefenseGame() {
@@ -60,7 +61,6 @@ namespace TerryDefense {
 						break;
 					case GameState.Ingame:
 						Player = new TerryDefensePlayer();
-						GameplayManager = new MissionManager();
 						break;
 					case GameState.PostGame:
 						break;
@@ -79,6 +79,7 @@ namespace TerryDefense {
 			PlayerJoined = true;
 
 			GameplayManager?.Init();
+			MissionManager?.Init();
 		}
 
 		public override void DoPlayerSuicide(Client cl) {

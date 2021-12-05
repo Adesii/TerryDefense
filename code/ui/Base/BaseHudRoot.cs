@@ -29,7 +29,11 @@ namespace TerryDefense.UI {
 					m_camera.ClearTarget();
 					m_Room.RoomData.Deselected();
 				}
+				if(m_Room != null)
+					m_Room.RoomData.Deselected();
 				m_Room = value;
+				if(m_Room != null)
+					m_Room.RoomData.Selected();
 			}
 		}
 		public BaseHudRoot() : base() {
@@ -88,8 +92,6 @@ namespace TerryDefense.UI {
 		protected override void OnClick(MousePanelEvent e) {
 			base.OnClick(e);
 			if(e.Target == this) {
-				if(SelectedRoom == null && m_Hovered_Room != null)
-					m_Hovered_Room.RoomData?.Selected();
 				SelectedRoom = m_Hovered_Room;
 			}
 		}

@@ -45,7 +45,10 @@ namespace TerryDefense.systems {
 
 			return m_savefile;
 		}
-
+		[ServerCmd]
+		public static void SaveCmd() {
+			Save();
+		}
 		public static void Save() {
 			if(m_savefile == null) {
 				CreateNewSave(new());
@@ -107,5 +110,12 @@ namespace TerryDefense.systems {
 		void Load(ref SaveFile save);
 	}
 	public abstract class SaveData {
+
+	}
+
+	public enum SaveLoadValidity {
+		GameState,
+		Always,
+
 	}
 }

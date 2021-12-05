@@ -22,6 +22,10 @@ namespace TerryDefense {
 				public static string Name = "Game.SavedSaveFile";
 				public SavedSaveFile() : base(Name) { }
 			}
+			public class ObjectiveCheck : EventAttribute {
+				public static string Name = "Game.ObjectiveCheck";
+				public ObjectiveCheck() : base(Name) { }
+			}
 
 		}
 		public static class Base {

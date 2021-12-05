@@ -10,6 +10,7 @@ namespace TerryDefense.systems {
 
 		public static void LoadWorld(WorldData world) {
 			Instance.CurrentWorld = world;
+			SaveSystem.Save();
 			Global.Lobby.SetData("Switching", "true");
 			Global.Lobby.SetData("SaveFile", SaveSystem.SaveFile.SaveGameName);
 
@@ -26,14 +27,14 @@ namespace TerryDefense.systems {
 	public partial class WorldData : BaseNetworkable {
 		public BBox WorldSize { get; set; } = new BBox(Vector3.One * -5000f, Vector3.One * 5000f);
 		public string MapFile { get; set; } = "empty";
-		public string MissionFile { get; set; } = "";
+		public string TileFile { get; set; } = "";
 
 	}
 
 	public static class TemplateWorldData {
 		public static WorldData BaseWorld => new() {
 			MapFile = "base",
-			MissionFile = "base",
+			TileFile = "base",
 			WorldSize = new BBox(0, 0)
 		};
 	}

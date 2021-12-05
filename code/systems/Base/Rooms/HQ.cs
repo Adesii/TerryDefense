@@ -1,13 +1,15 @@
 using System;
 using Sandbox;
+using Sandbox.UI;
 using TerryDefense.entities;
-
+using TerryDefense.UI;
 
 namespace TerryDefense.systems.Base {
 	public class HQ : RoomData {
 		public override RoomType RoomType => RoomType.HQ;
 
 		ModelEntity MainRoomPlanet;
+		HQRoot HQRoot;
 
 		public override void Created() {
 			base.Created();
@@ -25,11 +27,12 @@ namespace TerryDefense.systems.Base {
 
 		public override void Selected() {
 			base.Selected();
-
+			HQRoot = new HQRoot();
+			TerryDefenseHud.Instance.MainPanel?.AddChild(HQRoot);
 		}
 		public override void Deselected() {
 			base.Deselected();
-
+			HQRoot?.Delete();
 		}
 
 		public override void Tick() {

@@ -1,19 +1,81 @@
 using System;
+using System.Collections.Generic;
 
 namespace TerryDefense.systems {
-	public class MissionManager : MechanicManager {
+	public class MissionManager : MechanicManager, ISaveable {
 
-		public static MissionManager Instance => TerryDefenseGame.Instance.GameplayManager as MissionManager;
+		public static MissionManager Instance => TerryDefenseGame.Instance.MissionManager;
+
+		public List<Mission> AvailableMissions { get; private set; } = new();
+
+		public List<Mission> ActiveMissions { get; private set; } = new();
+		public List<Mission> CompletedMissions { get; private set; } = new();
 		public override void Destroy() {
 
 		}
 
 		public override void Init() {
+			foreach(var item in MissionAsset.All) {
+				if(AvailableMissions.Contains(item) || ActiveMissions.Contains(item) || CompletedMissions.Contains(item)) {
+					continue;
+				}
+				AvailableMissions.Add(item);
+			}
 
+		}
+
+		internal static void StartMission(Mission item) {
+			AddMission(item);
+			WorldManager.LoadWorld(new() {
+				MapFile = item.Details.MapFile,
+				TileFile = item.Details.TileFile,
+			});
 		}
 
 		public override void Update() {
 
+		}
+		public static void AddAvailableMission(Mission item) {
+			if(Instance.AvailableMissions.Contains(item) || Instance.ActiveMissions.Contains(item) || Instance.CompletedMissions.Contains(item)) {
+				return;
+			}
+			Instance.AvailableMissions.Add(item);
+		}
+		public static void AddMission(Mission mission) {
+			Instance.ActiveMissions.Add(mission);
+		}
+		[TDEvent.Game.ObjectiveCheck]
+		public static void CheckMissions(MissionType type, string eventname) {
+			if(Instance == null) return;
+			foreach(Mission mission in Instance.ActiveMissions) {
+				if(mission.Details.Scope == TerryDefenseGame.Instance.State) {
+					mission.CheckMission(type, eventname);
+				}
+			}
+
+		}
+
+		public void Save(ref SaveFile save) {
+			save.SaveData.TryAdd("MissionManager", new MissionSaveData() {
+				ActiveMissions = ActiveMissions,
+				CompletedMissions = CompletedMissions,
+				AvailableMissions = AvailableMissions
+			});
+		}
+
+		public void Load(ref SaveFile save) {
+			save.SaveData.TryGetValue("MissionManager", out SaveData data);
+			if(data is MissionSaveData missionData) {
+				ActiveMissions = missionData.ActiveMissions;
+				CompletedMissions = missionData.CompletedMissions;
+				AvailableMissions = missionData.AvailableMissions;
+			}
+
+		}
+		public class MissionSaveData : SaveData {
+			public List<Mission> ActiveMissions;
+			public List<Mission> CompletedMissions;
+			public List<Mission> AvailableMissions;
 		}
 	}
 }

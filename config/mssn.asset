@@ -1,0 +1,52 @@
+//
+// TerryDefense.Mission
+//
+@struct = TerryDefense_Mission
+[
+	title(string) : "Title" :  : ""
+	description(string) : "Description" :  : ""
+	details(struct:TerryDefense_MissionDetails) : "Details" :  : ""
+	requirements(array:struct:TerryDefense_Requirement) : "Requirements" :  : ""
+]
+
+//
+// TerryDefense.MissionDetails
+//
+@struct = TerryDefense_MissionDetails
+[
+	mapfile(string) { editor = "AssetBrowse(vmap)" } : "Map File" :  : ""
+	tilefile(string) : "Tile File" :  : "data/maps/ will be prefixed to this. making it easier to select the right map just by name"
+	scope(choices) : "Scope" : 2 : "" =
+	[
+		0 : "Menu"
+		1 : "Base"
+		2 : "Ingame"
+		3 : "Post Game"
+	]
+]
+
+//
+// TerryDefense.Requirement
+//
+@struct = TerryDefense_Requirement
+[
+	event(string) : "Event" :  : "Stuff like Enemy XY. example: terry_small. this would add to the objective each time an enemy of this type is killed. Or Building XY. example: lightning_tower. this would add to the objective each time a building of this type is built."
+	missiontype(choices) : "Mission Type" : 0 : "" =
+	[
+		0 : "Kill"
+		1 : "Build"
+		2 : "Capture"
+		3 : "Timed"
+		4 : "Research"
+	]
+	requiredamount(integer) : "Required Amount" : 1 : ""
+]
+
+//
+// TerryDefense.MissionAsset
+//
+@BaseClass = mssn : ""
+[
+	objective(struct:TerryDefense_Mission) : "Objective" :  : ""
+]
+
