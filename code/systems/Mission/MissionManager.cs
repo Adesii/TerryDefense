@@ -15,12 +15,6 @@ namespace TerryDefense.systems {
 		}
 
 		public override void Init() {
-			foreach(var item in MissionAsset.All) {
-				if(AvailableMissions.Contains(item) || ActiveMissions.Contains(item) || CompletedMissions.Contains(item)) {
-					continue;
-				}
-				AvailableMissions.Add(item);
-			}
 
 		}
 

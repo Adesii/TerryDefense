@@ -18,9 +18,9 @@ namespace TerryDefense {
 			if(!_all.Contains(Objective))
 				_all.Add(Objective);
 			Log.Error($"Mission {Name} loaded.");
+			MissionManager.AddAvailableMission(Objective);
 		}
 	}
-
 
 	public struct Mission {
 		public string Title { get; set; }
@@ -39,7 +39,7 @@ namespace TerryDefense {
 			}
 		}
 	}
-	public struct Requirement {
+	public class Requirement {
 		/// <summary>
 		/// Stuff like Enemy XY. example: terry_small. this would add to the objective each time an enemy of this type is killed.
 		/// Or Building XY. example: lightning_tower. this would add to the objective each time a building of this type is built.
@@ -62,7 +62,7 @@ namespace TerryDefense {
 			}
 		}
 	}
-	public struct MissionDetails {
+	public class MissionDetails {
 		[ResourceType("vmap")] public string MapFile { get; set; }
 		/// <summary>
 		/// data/maps/ will be prefixed to this. making it easier to select the right map just by name
