@@ -114,12 +114,13 @@ namespace TiledCS {
 				var document = idk.Parse();
 
 				var nodeMap = document.RootNode;
-				var nodesProperty = nodeMap.GetChildren("properties/property");
+				var nodesProperty = nodeMap.GetChild("properties")?.GetChildren("property");
 				var nodesLayer = nodeMap.GetChildren("layer");
 				var nodesImageLayer = nodeMap.GetChildren("imagelayer");
 				var nodesObjectGroup = nodeMap.GetChildren("objectgroup");
 				var nodesTileset = nodeMap.GetChildren("tileset");
 				var nodesGroup = nodeMap.GetChildren("group");
+
 
 				this.TiledVersion = nodeMap["tiledversion"].Content;
 				this.Orientation = nodeMap["orientation"].Content;
@@ -206,13 +207,14 @@ namespace TiledCS {
 
 			foreach(XmlElement node in nodesLayer) {
 				var nodeData = node.GetChild("data");
-				var nodesProperty = node.GetChildren("properties/property");
+				var nodesProperty = node.GetChild("properties").GetChildren("property");
 				var encoding = nodeData["encoding"].Content;
 				var attrVisible = node["visible"];
 				var attrLocked = node["locked"];
 				var attrTint = node["tintcolor"];
 				var attrOffsetX = node["offsetx"];
 				var attrOffsetY = node["offsety"];
+
 
 				var tiledLayer = new TiledLayer();
 				tiledLayer.id = int.Parse(node["id"].Content);
@@ -328,7 +330,7 @@ namespace TiledCS {
 			}
 
 			foreach(XmlElement node in nodesObjectGroup) {
-				var nodesProperty = node.GetChildren("properties/property");
+				var nodesProperty = node.GetChild("properties")?.GetChildren("property");
 				var nodesObject = node.GetChildren("object");
 				var attrVisible = node["visible"];
 				var attrLocked = node["locked"];

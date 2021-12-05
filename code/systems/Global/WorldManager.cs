@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Gamelib.Extensions;
 using Gamelib.FlowFields;
 using Sandbox;
@@ -47,16 +48,24 @@ namespace TerryDefense.systems {
 			}
 			PathManager.SetBounds(Instance.CurrentMapBounds);
 			if(Instance.CurrentMap.Layers != null) {
+				float Currenttheight = 0;
 				for(int i = 0; i < Instance.CurrentMap.Layers.Length; i++) {
 					TiledLayer layer = Instance.CurrentMap.Layers[i];
 					if(layer.name == "blockers" || layer.name == "buildable") {
+						float objectheight = 0f;
+						if(layer.properties != null) {
+							var depth = layer.properties.Where(x => x.name == "depth").FirstOrDefault()?.value?.ToFloat(10) ?? 0;
+							objectheight = depth;
+						}
+
 						foreach(var obj in layer.objects) {
 							TestBlockers.Add(new() {
-								Position = new Vector3(obj.x * 2, obj.y * 2, (layer.name == "blockers" ? 0 : 65)),
-								Size = new Vector3(obj.width * 2, obj.height * 2, layer.name == "blockers" ? 64 : 8),
-								col = layer.name == "blockers" ? new(1, 0, 0) : new(0, 1, 0)
+								Size = new Vector3(obj.width * 2, obj.height * 2, objectheight),
+								Position = new Vector3(obj.x * 2, obj.y * 2, Currenttheight),
+								col = string.IsNullOrEmpty(layer.tintcolor) ? Color.Red : layer.tintcolor
 							});
 						}
+						Currenttheight += objectheight;
 					}
 				}
 			}
@@ -77,7 +86,9 @@ namespace TerryDefense.systems {
 				BBox idk = new(blocker.Position * new Vector3(-1, 1, 1), (blocker.Position + blocker.Size) * new Vector3(-1, 1, 1));
 				idk += Instance.CurrentMapBounds.Mins.WithX(0);
 				idk += Instance.CurrentMapBounds.Maxs.WithY(0);
-				Debug.Box(idk.Mins, idk.Maxs, blocker.col);
+				var idkk = (idk.Mins - idk.Maxs).z.AlmostEqual(0f) ? idk.Maxs + new Vector3(0, 0, 4f) : idk.Maxs;
+				var mins = idk.Mins + new Vector3(0, 0, 1f);
+				Debug.Box(mins, idkk, blocker.col);
 			}
 		}
 
