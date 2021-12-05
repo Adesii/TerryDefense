@@ -72,14 +72,6 @@ namespace TerryDefense {
 
 	}
 
-	public enum ObjectiveType {
-		Defend,
-		Kill,
-		Destroy,
-		Capture,
-		None
-	}
-
 	public enum ObjectiveStatus {
 		Incomplete,
 		Complete,
