@@ -66,7 +66,7 @@ namespace TerryDefense {
 				property.type = node["type"]?.Content;
 				property.value = node["default"]?.Content;
 
-				Log.Error($"{property.name} {property.type} {property.value}");
+				//Log.Error($"{property.name} {property.type} {property.value}");
 
 				if(property.value == null && node.Content != null) {
 					property.value = node.Content;
