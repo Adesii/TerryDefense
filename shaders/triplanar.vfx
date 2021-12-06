@@ -1,0 +1,136 @@
+//=========================================================================================================================
+// Optional
+//=========================================================================================================================
+HEADER
+{
+    DevShader = true;
+	CompileTargets = ( IS_SM_50 && ( PC || VULKAN ) );
+	Description = "Basic Triplanar Shader!";
+}
+
+//=========================================================================================================================
+// Optional
+//=========================================================================================================================
+FEATURES
+{
+    #include "common/features.hlsl"
+
+	Feature( F_MULTIBLEND, 0..3 ( 0="1 Layers", 1="2 Layers", 2="3 Layers", 3="4 Layers" ), "Number Of Blendable Layers" );
+
+}
+
+//=========================================================================================================================
+COMMON
+{
+	#include "common/shared.hlsl"
+}
+
+//=========================================================================================================================
+
+struct VertexInput
+{
+	#include "common/vertexinput.hlsl"
+};
+
+//=========================================================================================================================
+
+struct PixelInput
+{
+	#include "common/pixelinput.hlsl"
+	float3 vRealWorldPosition : TEXCOORD14;
+};
+
+//=========================================================================================================================
+
+VS
+{
+	#include "common/vertex.hlsl"
+
+	//
+	// Main
+	//
+	PixelInput MainVs( INSTANCED_SHADER_PARAMS( VS_INPUT i ) )
+	{
+		PixelInput o = ProcessVertex( i );
+		// Add your vertex manipulation functions here
+		o.vRealWorldPosition = i.vPositionOs;
+		return FinalizeVertex( o );
+	}
+}
+
+//=========================================================================================================================
+
+PS
+{
+    #include "common/pixel.hlsl"
+	#include "islands/MultiBlendGatherer.hlsl"
+
+	StaticCombo( S_MULTIBLEND, F_MULTIBLEND, Sys( PC ) );
+
+	float TextureScale < Default( 10 ); Range( 0, 1000.0 ); UiGroup( "Material,90" ); >;
+	float TextureBlendSoftness < Default( 1 ); Range( 0, 100.0 ); UiGroup( "Material,90" ); >;
+
+	float TextureScaleB < Default( 10 ); Range( 0, 1000.0 ); UiGroup( "Material B,90" ); >;
+	float TextureBlendSoftnessB < Default( 1 ); Range( 0, 100.0 ); UiGroup( "Material B,90" ); >;
+
+
+
+	Material TriplanarMaterial(PixelInput i,Texture2D color,Texture2D norm,Texture2D rma,float3 tintcolor,float scale,float softness){
+			float2 yUV = i.vRealWorldPosition.xz / scale;
+			float2 xUV = i.vRealWorldPosition.zy / scale;
+			float2 zUV = i.vRealWorldPosition.xy / scale;
+			// Now do texture samples from our diffuse map with each of the 3 UV set's we've just made.
+			float4 yDiff = Tex2DS(color,TextureFiltering, yUV);
+			float4 xDiff = Tex2DS(color,TextureFiltering, xUV);
+			float4 zDiff = Tex2DS(color,TextureFiltering, zUV);
+
+			float4 yNorm = Tex2DS(norm,TextureFiltering, yUV);
+			float4 xNorm = Tex2DS(norm,TextureFiltering, xUV);
+			float4 zNorm = Tex2DS(norm,TextureFiltering, zUV);
+
+			float4 yRma = Tex2DS(rma,TextureFiltering, yUV);
+			float4 xRma = Tex2DS(rma,TextureFiltering, xUV);
+			float4 zRma = Tex2DS(rma,TextureFiltering, zUV);
+			// Get the absolute value of the world normal.
+			// Put the blend weights to the power of BlendSharpness, the higher the value, 
+            // the sharper the transition between the planar maps will be.
+			float3 blendWeights = pow (abs(i.vNormalWs), softness);
+			// Divide our blend mask by the sum of it's components, this will make x+y+z=1
+			blendWeights = blendWeights / (blendWeights.x + blendWeights.y + blendWeights.z);
+			// Finally, blend together all three samples based on the blend mask.
+			float4 dif = xDiff * blendWeights.x + yDiff * blendWeights.y + zDiff * blendWeights.z;
+			float4 norms = xNorm * blendWeights.x + yNorm * blendWeights.y + zNorm * blendWeights.z;
+			float4 rough = xRma * blendWeights.x + yRma * blendWeights.y + zRma * blendWeights.z;
+			return ToMaterial(dif,norms,rough,tintcolor);
+
+	}
+
+	
+	
+	//
+	// Main
+	//
+	PixelOutput MainPs( PixelInput i )
+	{
+		Material m = TriplanarMaterial(i,g_tColor,g_tNormal,g_tRma,g_flTintColor,TextureScale,TextureBlendSoftness);
+		/* m.Metalness = 1.3f; // Forces the object to be metalic */
+       	// m.Albedo.rg = sin(g_flTime + i.vTextureCoords/100);
+	   	#if S_MULTIBLEND >= 1
+
+		float oneMinusDot = 1.0 - dot(float3(0,0,1), i.vNormalWs);
+		float F = pow(oneMinusDot, 5.0);
+
+	   	m = lerp(m,TriplanarMaterial(i,g_tColorB,g_tNormalB,g_tRmaB,g_flTintColorB,TextureScaleB,TextureBlendSoftnessB),clamp(F,0,1));
+
+
+
+		#if S_MULTIBLEND >= 2
+	   	m = lerp(m,GatherMaterialC(i),0.25f);
+		#endif //1
+		#endif //2
+
+		return FinalizePixelMaterial( i, m );
+	}
+
+	
+}
