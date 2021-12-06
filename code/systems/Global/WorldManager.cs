@@ -5,6 +5,8 @@ using System.Linq;
 using Gamelib.Extensions;
 using Gamelib.FlowFields;
 using Sandbox;
+using TerryDefense.entities;
+using TerryDefense.entities.WorldObjects;
 using TiledCS;
 
 namespace TerryDefense.systems {
@@ -16,7 +18,7 @@ namespace TerryDefense.systems {
 
 		public BBox CurrentMapBounds { get; protected set; }
 
-		public static List<blocker> TestBlockers { get; protected set; } = new();
+		[Net] public List<WorldObject> WorldObjects { get; protected set; } = new();
 
 
 		public static void LoadWorld(WorldData world) {
@@ -49,53 +51,47 @@ namespace TerryDefense.systems {
 			PathManager.SetBounds(Instance.CurrentMapBounds);
 			if(Instance.CurrentMap.Layers != null) {
 				float Currenttheight = 0;
+				float objectheight = 0f;
 				for(int i = 0; i < Instance.CurrentMap.Layers.Length; i++) {
 					TiledLayer layer = Instance.CurrentMap.Layers[i];
-					if(layer.name == "blockers" || layer.name == "buildable") {
-						float objectheight = 0f;
-						if(layer.properties != null) {
-							var depth = layer.properties.Where(x => x.name == "depth").FirstOrDefault()?.value?.ToFloat(10) ?? 0;
-							objectheight = depth;
+					foreach(var obj in layer.objects) {
+						WorldObject wobj = null;
+						if(obj.polygon != null) {
+							wobj = WorldObject.CreateFromTiledObject<PolygonObject>(obj, layer, objectheight);
+						} else if(obj.point != null) {
+							wobj = WorldObject.CreateFromTiledObject<PointObject>(obj, layer, objectheight);
+						} else if(obj.ellipse != null) {
+							wobj = WorldObject.CreateFromTiledObject<ElipseObject>(obj, layer, objectheight);
+						} else {
+							wobj = WorldObject.CreateFromTiledObject<BoxObject>(obj, layer, objectheight);
 						}
 
-						foreach(var obj in layer.objects) {
-							TestBlockers.Add(new() {
-								Size = new Vector3(obj.width * 2, obj.height * 2, objectheight),
-								Position = new Vector3(obj.x * 2, obj.y * 2, Currenttheight),
-								col = string.IsNullOrEmpty(layer.tintcolor) ? Color.Red : layer.tintcolor
-							});
-						}
-						Currenttheight += objectheight;
+						Instance.WorldObjects.Add(wobj);
 					}
+					objectheight = Instance.WorldObjects[0].TileObject.Size.z;
+					Currenttheight += objectheight;
 				}
 			}
 		}
-		[Event.Hotload]
+		[Event.Hotload, ServerCmd("rebuild_world")]
 		public static void OnHotload() {
 			if(Instance.CurrentWorld == null) return;
+			TiledExtensions.tileObjectTypes = null;
 			Debug.Info("Hotloading world " + Instance.CurrentWorld);
-			TestBlockers.Clear();
+			foreach(var item in Instance.WorldObjects) {
+				item.Delete();
+			}
+			Instance.WorldObjects.Clear();
 			Instance.CurrentMap = null;
 			InitWorld();
 		}
-		[Event.Tick]
+		[Event.Tick.Server]
 		public static void ShowBlocker() {
 			if(Instance == null) return;
 			Debug.Box(Instance.CurrentMapBounds.Mins, Instance.CurrentMapBounds.Maxs, Color.Green);
-			foreach(var blocker in TestBlockers) {
-				BBox idk = new(blocker.Position * new Vector3(-1, 1, 1), (blocker.Position + blocker.Size) * new Vector3(-1, 1, 1));
-				idk += Instance.CurrentMapBounds.Mins.WithX(0);
-				idk += Instance.CurrentMapBounds.Maxs.WithY(0);
-				var idkk = (idk.Mins - idk.Maxs).z.AlmostEqual(0f) ? idk.Maxs + new Vector3(0, 0, 4f) : idk.Maxs;
-				var mins = idk.Mins + new Vector3(0, 0, 1f);
-				Debug.Box(mins, idkk, blocker.col);
+			foreach(var blocker in Instance.WorldObjects) {
+				blocker.DebugObject();
 			}
-		}
-
-		public struct blocker {
-			public Vector3 Position;
-			public Vector3 Size;
-			public Color col;
 		}
 	}
 	[System.Serializable]

@@ -101,5 +101,46 @@ namespace TerryDefense {
 			if(!Debug.Enabled) return;
 			DebugOverlay.Box(position, rotation, mins, maxs, color, duration, depthTest);
 		}
+
+		public static void Ellipse(Vector3 position, Vector3 size, Color color = default, float duration = 0, bool depthTest = true) {
+			var points = new System.Collections.Generic.List<Vector3>();
+			var radiusx = (int)(size.x / 2);
+			var radiusy = (int)(size.y / 2);
+			for(var i = 0; i < 360; i += 32) {
+				var x = (int)(radiusx * System.MathF.Cos(i * System.MathF.PI / 180)) * -1;
+				var y = (int)(radiusy * System.MathF.Sin(i * System.MathF.PI / 180));
+				points.Add(new Vector3(x, y) + position + new Vector3(radiusx, radiusy));
+			}
+			int iterations = (size.z == 0f) ? 1 : 2;
+			for(int y = 0; y < iterations; y++) {
+				for(int i = 0; i < points.Count; i++) {
+					if(i == points.Count - 1) {
+						Debug.Line(new Vector3(points[i].x, points[i].y, size.z * y), new Vector3(points[0].x, points[0].y, size.z * y), color, duration, depthTest);
+					} else {
+						Debug.Line(new Vector3(points[i].x, points[i].y, size.z * y), new Vector3(points[i + 1].x, points[i + 1].y, size.z * y), color, duration, depthTest);
+					}
+
+				}
+			}
+			if(iterations > 1)
+				foreach(var item in points) {
+					Debug.Line(new Vector3(item.x, item.y, 0), new Vector3(item.x, item.y, size.z), color, duration, depthTest);
+				}
+		}
+		public static void Polygon(System.Collections.Generic.List<Vector3> points, Color color = default, float duration = 0, bool depthTest = true) {
+			for(int y = 0; y < 2; y++) {
+				for(int i = 0; i < points.Count; i++) {
+					if(i == points.Count - 1) {
+						Debug.Line(new Vector3(points[i].x, points[i].y, points[i].z * y), new Vector3(points[0].x, points[0].y, points[0].z * y), color, duration, depthTest);
+					} else {
+						Debug.Line(new Vector3(points[i].x, points[i].y, points[i].z * y), new Vector3(points[i + 1].x, points[i + 1].y, points[i + 1].z * y), color, duration, depthTest);
+					}
+
+				}
+			}
+			foreach(var item in points) {
+				Debug.Line(new Vector3(item.x, item.y, 0), new Vector3(item.x, item.y, item.z), color, duration, depthTest);
+			}
+		}
 	}
 }

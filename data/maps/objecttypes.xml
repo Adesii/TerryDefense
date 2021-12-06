@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="Blocker" color="#a0a0a4">
+  <property name="DebugColor" type="color" default="#ffcf901c"/>
+  <property name="Depth" type="float" default="32"/>
+ </objecttype>
+ <objecttype name="Buildable" color="#37bd35">
+  <property name="DebugColor" type="color" default="#ff45e25d"/>
+ </objecttype>
+ <objecttype name="Objectives" color="#ebeb34">
+  <property name="DebugColor" type="color" default="#fff1e31a"/>
+ </objecttype>
+</objecttypes>

@@ -356,7 +356,7 @@ namespace TiledCS {
 			}
 
 			foreach(XmlElement node in nodesImageLayer) {
-				var nodesProperty = node.GetChildren("properties/property");
+				var nodesProperty = node.GetChild("properties")?.GetChildren("property");
 				var nodeImage = node.GetChild("image");
 				var attrVisible = node["visible"];
 				var attrLocked = node["locked"];
@@ -397,7 +397,7 @@ namespace TiledCS {
 			var result = new List<TiledObject>();
 
 			foreach(XmlElement node in nodeList) {
-				var nodesProperty = node.GetChildren("properties/property");
+				var nodesProperty = node.GetChild("properties")?.GetChildren("property");
 				var nodePolygon = node.GetChild("polygon");
 				var nodePoint = node.GetChild("point");
 				var nodeEllipse = node.GetChild("ellipse");
