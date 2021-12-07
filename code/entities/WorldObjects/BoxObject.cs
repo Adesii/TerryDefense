@@ -7,10 +7,10 @@ namespace TerryDefense.entities.WorldObjects {
 
 		public override void RebuildObject() {
 			base.RebuildObject();
-
-
+			if(TileObject.type != TileObjectTypes.Blocker) return;
 			_blocker.SetModel(Model.Builder.AddCollisionBox(TileObject.Size / 2, TileObject.Size / 2).Create());
-			_blocker.SetupPhysicsFromModel(PhysicsMotionType.Static, true);
+			_blocker?.SetInteractsAs(CollisionLayer.PLAYER_CLIP);
+			_blocker?.SetupPhysicsFromModel(PhysicsMotionType.Static, true);
 		}
 		public override void GenerateObject() {
 			base.GenerateObject();

@@ -63,10 +63,18 @@ namespace TerryDefense.entities {
 		public override void Spawn() {
 			base.Spawn();
 			Transmit = TransmitType.Always;
+			Tags.Add("ff_ignore");
+
+			_blocker?.SetInteractsAs(CollisionLayer.PLAYER_CLIP);
+			_blocker?.SetupPhysicsFromModel(PhysicsMotionType.Static, true);
 		}
 
 		protected override void OnDestroy() {
 			base.OnDestroy();
+			_blocker?.Delete();
+			_sceneObject?.Delete();
+		}
+		~WorldObject() {
 			_blocker?.Delete();
 			_sceneObject?.Delete();
 		}

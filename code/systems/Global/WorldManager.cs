@@ -7,6 +7,7 @@ using Gamelib.FlowFields;
 using Sandbox;
 using TerryDefense.entities;
 using TerryDefense.entities.WorldObjects;
+using TerryDefense.Units;
 using TiledCS;
 
 namespace TerryDefense.systems {
@@ -82,24 +83,38 @@ namespace TerryDefense.systems {
 					Currenttheight += objectheight;
 				}
 
-				PathManager.Create(16, 48);
+
 			} else {
 				throw new Exception("No layers found in map");
 			}
 
+
+
 			if(Instance._fileWatch == null) {
 				Debug.Error("File watcher not set watching now: " + Instance.CurrentWorld.TileFile);
-				Instance._fileWatch = FileSystem.Mounted.Watch("/data/maps/" + Instance.CurrentWorld.TileFile + ".tmx");
+				Instance._fileWatch = FileSystem.Mounted.Watch("/data/maps/*");
+
+				Instance._fileWatch.Enabled = true;
+				Instance._fileWatch.OnChanges += Instance.CheckFile;
+			} else {
+				Instance._fileWatch.OnChanges -= Instance.CheckFile;
+				Instance._fileWatch.Dispose();
+
+				Instance._fileWatch = FileSystem.Mounted.Watch("/data/maps/*");
 
 				Instance._fileWatch.Enabled = true;
 				Instance._fileWatch.OnChanges += Instance.CheckFile;
 			}
 		}
+
 		public void CheckFile(FileWatch file) {
+			//foreach(var item in file.Changes) {
+			//	Log.Error("File changed: " + item);
+			//}
 			DelayHotload();
 		}
 		private async void DelayHotload() {
-			await GameTask.DelayRealtime(100);
+			await GameTask.DelaySeconds(0.1f);
 			OnHotload();
 		}
 		[Event.Hotload, ServerCmd("rebuild_world")]
@@ -114,6 +129,26 @@ namespace TerryDefense.systems {
 			Instance.WorldObjects.Clear();
 			Instance.CurrentMap = null;
 			InitWorld();
+
+			PathManager.All.Clear();
+			PathManager._pathfinders.Clear();
+			PathManager._pathfinders = new();
+			PathManager._smallest = null;
+			PathManager._largest = null;
+			PathManager._default = null;
+			PathManager.Create(25, 50);
+			PathManager.Update();
+			AwaitCompletionOfFlowField();
+
+		}
+		private static async void AwaitCompletionOfFlowField() {
+			await GameTask.DelaySeconds(0.5f);
+			while(PathManager._pathfinders.Count < 0) {
+				await GameTask.DelaySeconds(0.25f);
+			}
+			foreach(var item in Entity.All.OfType<BaseUnit>()) {
+				item.RebuildPath();
+			}
 		}
 		[Event.Tick.Server]
 		public static void ShowBlocker() {
