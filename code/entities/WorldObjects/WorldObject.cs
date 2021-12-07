@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Gamelib.FlowFields.Entities;
 using Sandbox;
 using TiledCS;
 
@@ -9,7 +10,11 @@ namespace TerryDefense.entities {
 	public partial class WorldObject : Entity {
 		[Net] public NetworkedTiledObject TileObject { get; set; }
 
-		private SceneObject sceneObject;
+		protected FlowFieldBlocker _blocker;
+
+		public Material Material { get; set; } = Material.Load("materials/cliffside.vmat");
+
+		protected SceneObject _sceneObject;
 
 		private static NetworkedTiledObject FromTiledObject(TiledObject tiledObject) {
 			var worldObject = new NetworkedTiledObject {
@@ -48,9 +53,9 @@ namespace TerryDefense.entities {
 			worldObject.Position = worldObject.TileObject.Position;
 			//Log.Info("WTF");
 			worldObject.TileObject.Color = Color.Parse(string.Concat("#", tiledObject.GetCustomProperty("DebugColor")?.Substring(3) ?? "ffffff")) ?? Color.Black;
-			var depth = tiledObject.GetCustomProperty("Depth")?.ToFloat(10) ?? 0;
+			var depth = tiledObject.GetCustomProperty("Depth")?.ToFloat(10) ?? 0f;
 
-			worldObject.TileObject.Size = worldObject.TileObject.Size.WithZ(depth);
+			worldObject.TileObject.Size = worldObject.TileObject.Size.WithZ(depth.AlmostEqual(0) ? 10 : depth);
 			return worldObject;
 		}
 
@@ -59,9 +64,21 @@ namespace TerryDefense.entities {
 			Transmit = TransmitType.Always;
 		}
 
+		protected override void OnDestroy() {
+			base.OnDestroy();
+			_blocker?.Delete();
+			_sceneObject?.Delete();
+		}
+
 
 		public virtual void RebuildObject() {
-
+			Host.AssertServer();
+			_blocker = new() {
+				Position = Position,
+				Rotation = Rotation,
+				Parent = this,
+			};
+			RpcGenerateObject();
 		}
 
 		public virtual void GenerateObject() {
@@ -76,6 +93,29 @@ namespace TerryDefense.entities {
 		[ClientRpc]
 		public virtual void RpcGenerateObject() {
 			GenerateObject();
+		}
+
+
+		public static Vector3 CalculateNormal(Vertex v1, Vertex v2, Vertex v3) {
+			Vector3 u = v2.Position - v1.Position;
+			Vector3 v = v3.Position - v1.Position;
+
+			return new Vector3 {
+				x = (u.y * v.z) - (u.z * v.y),
+				y = (u.z * v.x) - (u.x * v.z),
+				z = (u.x * v.y) - (u.y * v.x)
+			};
+		}
+
+		public static Vector4 CalculateTangent(SimpleVertex v1, SimpleVertex v2, SimpleVertex v3) {
+			Vector4 u = v2.texcoord - v1.texcoord;
+			Vector4 v = v3.texcoord - v1.texcoord;
+
+			float r = 1.0f / (u.x * v.y - u.y * v.x);
+			Vector3 tu = v2.position - v1.position;
+			Vector3 vu = v3.position - v1.position;
+
+			return new Vector4((tu * v.y - vu * u.y) * r, 1.0f);
 		}
 
 	}
