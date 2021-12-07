@@ -85,6 +85,7 @@ namespace TerryDefense.systems {
 				Debug.Error("Failed to load save file");
 				return;
 			}
+			WorldManager.LoadWorld(m_savefile.WorldData);
 
 			foreach(var item in Entity.All.Where(x => x is ISaveable)) {
 				var saveable = item as ISaveable;

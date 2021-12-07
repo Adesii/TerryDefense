@@ -20,13 +20,22 @@ namespace TerryDefense.systems {
 
 		[Net] public List<WorldObject> WorldObjects { get; protected set; } = new();
 
+		FileWatch _fileWatch;
+
 
 		public static void LoadWorld(WorldData world) {
+			if(Instance == null) return;
 			Instance.CurrentWorld = world;
 			Global.Lobby.SetData("Switching", "true");
 			Global.Lobby.SetData("SaveFile", SaveSystem.SaveFile.saveid.ToString());
+			string sterl = StringX.NormalizeFilename(world.MapFile);
+			sterl = Path.GetFileNameWithoutExtension(sterl);
 
-			if(Instance.CurrentWorld.MapFile != Global.MapName && !string.IsNullOrEmpty(Instance.CurrentWorld.MapFile)) {
+			Log.Error("Loading world: " + sterl);
+			Log.Error($"From Current World: {Global.MapName}");
+
+
+			if(sterl != Global.MapName && !string.IsNullOrEmpty(Instance.CurrentWorld.MapFile)) {
 				SaveSystem.Save();
 				ChangeWorld(Instance.CurrentWorld.MapFile);
 			}
@@ -46,7 +55,7 @@ namespace TerryDefense.systems {
 			if(Instance.CurrentMap == null) {
 				Instance.CurrentMap = new TiledMap("data/maps/" + Instance.CurrentWorld.TileFile + ".tmx");
 				Vector3 tempsize = new(Instance.CurrentMap.Width * Instance.CurrentMap.TileWidth, Instance.CurrentMap.Height * Instance.CurrentMap.TileHeight, 0);
-				Instance.CurrentMapBounds = new BBox(-tempsize, tempsize);
+				Instance.CurrentMapBounds = new BBox(-tempsize, tempsize.WithZ(128));
 			}
 			PathManager.SetBounds(Instance.CurrentMapBounds);
 			if(Instance.CurrentMap.Layers != null) {
@@ -65,18 +74,35 @@ namespace TerryDefense.systems {
 						} else {
 							wobj = WorldObject.CreateFromTiledObject<BoxObject>(obj, layer, objectheight);
 						}
-
+						if(Host.IsServer)
+							wobj?.RebuildObject();
 						Instance.WorldObjects.Add(wobj);
 					}
-					objectheight = Instance.WorldObjects[0].TileObject.Size.z;
+					objectheight = Instance.WorldObjects[0].TileObject.Size.z; //TODO: Find proper way to adjust the height of the objects
 					Currenttheight += objectheight;
 				}
+
+				PathManager.Create(16, 48);
+			} else {
+				throw new Exception("No layers found in map");
 			}
+
+			if(Instance._fileWatch == null && Host.IsServer) {
+				Log.Error("File watcher not set watching now: " + Instance.CurrentWorld.TileFile);
+				Instance._fileWatch = FileSystem.Mounted.Watch("/data/maps/" + Instance.CurrentWorld.TileFile + ".tmx");
+
+				Instance._fileWatch.Enabled = true;
+				Instance._fileWatch.OnChanges += Instance.CheckFile;
+			}
+		}
+		public void CheckFile(FileWatch file) {
+			OnHotload();
 		}
 		[Event.Hotload, ServerCmd("rebuild_world")]
 		public static void OnHotload() {
 			if(Instance.CurrentWorld == null) return;
 			TiledExtensions.tileObjectTypes = null;
+			PathManager.All.Clear();
 			Debug.Info("Hotloading world " + Instance.CurrentWorld);
 			foreach(var item in Instance.WorldObjects) {
 				item.Delete();
@@ -87,8 +113,10 @@ namespace TerryDefense.systems {
 		}
 		[Event.Tick.Server]
 		public static void ShowBlocker() {
-			if(Instance == null) return;
-			Debug.Box(Instance.CurrentMapBounds.Mins, Instance.CurrentMapBounds.Maxs, Color.Green);
+			if(Instance == null || !Debug.Enabled) return;
+			//Debug.Box(Instance.CurrentMapBounds.Mins, Instance.CurrentMapBounds.Maxs, Color.Green);
+			if(PathManager.Bounds.HasValue)
+				Debug.Box(PathManager.Bounds.Value.Mins, PathManager.Bounds.Value.Maxs, Color.Magenta);
 			foreach(var blocker in Instance.WorldObjects) {
 				blocker.DebugObject();
 			}

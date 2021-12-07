@@ -8,7 +8,7 @@ namespace TerryDefense.UI {
 
 		protected override void OnClick(MousePanelEvent e) {
 			base.OnClick(e);
-			if(e.Target == this) {
+			if(SaveData != null) {
 				SaveSystem.Load(SaveData);
 			}
 		}
