@@ -87,8 +87,8 @@ namespace TerryDefense.systems {
 				throw new Exception("No layers found in map");
 			}
 
-			if(Instance._fileWatch == null && Host.IsServer) {
-				Log.Error("File watcher not set watching now: " + Instance.CurrentWorld.TileFile);
+			if(Instance._fileWatch == null) {
+				Debug.Error("File watcher not set watching now: " + Instance.CurrentWorld.TileFile);
 				Instance._fileWatch = FileSystem.Mounted.Watch("/data/maps/" + Instance.CurrentWorld.TileFile + ".tmx");
 
 				Instance._fileWatch.Enabled = true;
@@ -96,6 +96,10 @@ namespace TerryDefense.systems {
 			}
 		}
 		public void CheckFile(FileWatch file) {
+			DelayHotload();
+		}
+		private async void DelayHotload() {
+			await GameTask.DelayRealtime(100);
 			OnHotload();
 		}
 		[Event.Hotload, ServerCmd("rebuild_world")]

@@ -8,6 +8,13 @@ using TiledCS;
 
 
 namespace TerryDefense {
+	public static class TileObjectTypes {
+		public const string
+				Blocker = "Blocker",
+				Buildable = "Buildable",
+				Objectives = "Objectives";
+	}
+
 	public static class TiledExtensions {
 		public const string ObjectsPath = "data/maps/objecttypes.xml";
 		public static Dictionary<string, TileObjectTypes> tileObjectTypes;

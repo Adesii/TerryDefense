@@ -14,7 +14,7 @@ namespace TerryDefense.entities.WorldObjects {
 		}
 		public override void GenerateObject() {
 			base.GenerateObject();
-			if(TileObject.type == "buildable") return;
+			if(TileObject.type == TileObjectTypes.Buildable) return;
 			Mesh idks = new Mesh(Material);
 			VertexBuffer vb = new();
 			vb.AddCube(TileObject.Size / 2, -TileObject.Size.WithZ(TileObject.Size.z), Rotation.Identity);

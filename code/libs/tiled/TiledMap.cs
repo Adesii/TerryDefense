@@ -446,7 +446,7 @@ namespace TiledCS {
 				}
 
 				if(node["rotation"] != null) {
-					obj.rotation = int.Parse(node["rotation"].Content);
+					obj.rotation = node["rotation"].Content.ToFloat();
 				}
 
 				result.Add(obj);

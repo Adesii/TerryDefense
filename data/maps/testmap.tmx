@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="left-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="48">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="left-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="52">
  <objectgroup id="2" name="blockers">
   <object id="4" type="Blocker" x="640" y="864" width="640" height="64"/>
   <object id="5" type="Blocker" x="320" y="288" width="64" height="608"/>
@@ -20,8 +20,8 @@
     <property name="Depth" type="float" value="96"/>
    </properties>
   </object>
-  <object id="40" type="Blocker" x="722" y="1142">
-   <polygon points="0,0 -142,19 -116,-73 -59,-113 13,-123 145,-121 264,-153 283,-57 152,8"/>
+  <object id="40" type="Blocker" x="777.878" y="1182.81" rotation="13.7862">
+   <polygon points="0,0 -273.076,-3.34109 -201.862,-63.5022 -116,-73 -59,-113 13,-123 145,-121 228.957,-114.744 283,-57 152,8"/>
   </object>
   <object id="41" type="Blocker" x="534" y="1074">
    <properties>
@@ -36,15 +36,6 @@
    </properties>
    <ellipse/>
   </object>
-  <object id="43" type="Objectives" x="604" y="248">
-   <point/>
-  </object>
-  <object id="44" type="Objectives" x="434" y="240">
-   <point/>
-  </object>
-  <object id="45" type="Objectives" x="286" y="262">
-   <point/>
-  </object>
   <object id="46" type="Blocker" x="288" y="1068" width="242.667" height="85.3333">
    <properties>
     <property name="DebugColor" type="color" value="#ff555500"/>
@@ -58,12 +49,35 @@
   <object id="20" type="Buildable" x="864" y="640" width="64" height="96"/>
   <object id="21" type="Buildable" x="1024" y="640" width="32" height="160"/>
   <object id="22" type="Buildable" x="640" y="864" width="128" height="32"/>
-  <object id="23" type="Buildable" x="384" y="768" width="544" height="32"/>
+  <object id="23" type="Buildable" x="384" y="768" width="544" height="32">
+   <properties>
+    <property name="z" type="float" value="0"/>
+   </properties>
+  </object>
   <object id="24" type="Buildable" x="480" y="608" width="320" height="32"/>
   <object id="25" type="Buildable" x="480" y="544" width="32" height="64"/>
   <object id="26" type="Buildable" x="352" y="448" width="32" height="288"/>
   <object id="28" type="Buildable" x="512" y="544" width="32" height="32"/>
   <object id="29" type="Buildable" x="512" y="384" width="32" height="96"/>
   <object id="30" type="Buildable" x="384" y="448" width="128" height="32"/>
+ </objectgroup>
+ <objectgroup id="6" name="enemies">
+  <object id="48" type="EnemySpawners" x="1170.67" y="990.667">
+   <point/>
+  </object>
+  <object id="49" type="EnemySpawners" x="513.333" y="1225.33">
+   <point/>
+  </object>
+  <object id="50" type="EnemySpawners" x="1112" y="1116">
+   <point/>
+  </object>
+  <object id="51" type="EnemySpawners" x="1084" y="1004">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="goals">
+  <object id="43" type="Objectives" x="677.333" y="485.333">
+   <point/>
+  </object>
  </objectgroup>
 </map>

@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Attach to S&box",
+            "request": "attach",
+            "type": "coreclr",
+            "processId": "${command:facepunch-sbox.pickProcess}",
+            "requireExactSource": false
+        },
+        {
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",

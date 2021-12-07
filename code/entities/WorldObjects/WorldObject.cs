@@ -49,13 +49,14 @@ namespace TerryDefense.entities {
 		public static T CreateFromTiledObject<T>(TiledObject tiledObject, TiledLayer layer = null, float layerHeight = 0) where T : WorldObject {
 			var worldObject = Library.Create<T>();
 			worldObject.TileObject = FromTiledObject(tiledObject);
-			worldObject.TileObject.Position = worldObject.TileObject.Position.WithZ(layerHeight);
+			worldObject.TileObject.Position = worldObject.TileObject.Position.WithZ(layerHeight + tiledObject.GetCustomProperty("z").ToFloat());
 			worldObject.Position = worldObject.TileObject.Position;
 			//Log.Info("WTF");
 			worldObject.TileObject.Color = Color.Parse(string.Concat("#", tiledObject.GetCustomProperty("DebugColor")?.Substring(3) ?? "ffffff")) ?? Color.Black;
 			var depth = tiledObject.GetCustomProperty("Depth")?.ToFloat(10) ?? 0f;
 
 			worldObject.TileObject.Size = worldObject.TileObject.Size.WithZ(depth.AlmostEqual(0) ? 10 : depth);
+			worldObject.Rotation = Rotation.FromAxis(Vector3.Up, -worldObject.TileObject.Rotation);
 			return worldObject;
 		}
 
@@ -82,7 +83,8 @@ namespace TerryDefense.entities {
 		}
 
 		public virtual void GenerateObject() {
-			if(IsServer) return;
+			if(IsServer || TileObject.type == TileObjectTypes.Buildable) return;
+			//Log.Error(TileObject.type);
 
 
 		}

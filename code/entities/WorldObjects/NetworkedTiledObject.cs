@@ -19,7 +19,7 @@ namespace TerryDefense.entities {
 		/// <summary>
 		/// The object's rotation
 		/// </summary>
-		[Net] public int Rotation { get; set; }
+		[Net] public float Rotation { get; set; }
 		[Net] public Vector3 Size { get; set; }
 		/// <summary>
 		/// The tileset gid when the object is linked to a tile
