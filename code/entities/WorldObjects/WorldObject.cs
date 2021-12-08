@@ -12,7 +12,7 @@ namespace TerryDefense.entities {
 
 		protected FlowFieldBlocker _blocker;
 
-		public Material Material { get; set; } = Material.Load("materials/cliffside.vmat");
+		[Net] public Material Material { get; set; } = Material.Load("materials/cliffside.vmat");
 
 		protected SceneObject _sceneObject;
 
@@ -54,6 +54,7 @@ namespace TerryDefense.entities {
 			//Log.Info("WTF");
 			worldObject.TileObject.Color = Color.Parse(string.Concat("#", tiledObject.GetCustomProperty("DebugColor")?.Substring(3) ?? "ffffff")) ?? Color.Black;
 			var depth = tiledObject.GetCustomProperty("Depth")?.ToFloat(10) ?? 0f;
+			worldObject.Material = Material.Load(tiledObject.GetCustomProperty("CustomMaterial") ?? "materials/cliffside.vmat");
 
 			worldObject.TileObject.Size = worldObject.TileObject.Size.WithZ(depth.AlmostEqual(0) ? 10 : depth);
 			worldObject.Rotation = Rotation.FromAxis(Vector3.Up, -worldObject.TileObject.Rotation);

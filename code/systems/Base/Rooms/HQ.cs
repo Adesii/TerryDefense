@@ -20,7 +20,7 @@ namespace TerryDefense.systems.Base {
 				Scale = 7,
 				EnableShadowCasting = false,
 			};
-			MainRoomPlanet.RenderColor = Color.White.WithAlpha(0.9f);
+			MainRoomPlanet.RenderColor = Color.White.WithAlpha(0.99f);
 			MainRoomPlanet.SetMaterialGroup("holographic");
 			Models.Add(MainRoomPlanet);
 		}

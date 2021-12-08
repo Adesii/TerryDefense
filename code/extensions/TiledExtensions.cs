@@ -21,8 +21,11 @@ namespace TerryDefense {
 		public static string GetCustomProperty(this TiledObject obj, string name) {
 			if(obj.properties != null)
 				foreach(var prop in obj.properties) {
-					if(prop.name == name)
+					if(prop.name == name) {
+						if(string.IsNullOrEmpty(prop.value))
+							return null;
 						return prop.value;
+					}
 				}
 			if(tileObjectTypes == null) {
 				ParseObjecTypes();

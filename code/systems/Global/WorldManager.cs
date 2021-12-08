@@ -119,7 +119,7 @@ namespace TerryDefense.systems {
 		}
 		[Event.Hotload, ServerCmd("rebuild_world")]
 		public static void OnHotload() {
-			if(Instance.CurrentWorld == null) return;
+			if(Instance.CurrentWorld == null || string.IsNullOrEmpty(Instance.CurrentWorld.TileFile)) return;
 			TiledExtensions.tileObjectTypes = null;
 			PathManager.All.Clear();
 			Debug.Info("Hotloading world " + Instance.CurrentWorld);
@@ -171,7 +171,7 @@ namespace TerryDefense.systems {
 	public static class TemplateWorldData {
 		public static WorldData BaseWorld => new() {
 			MapFile = "base",
-			TileFile = "base"
+			TileFile = ""
 		};
 	}
 }

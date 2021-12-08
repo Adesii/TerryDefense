@@ -1,0 +1,54 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "triplanar.vfx"
+
+	//---- Number Of Blendable Layers ----
+	F_MULTIBLEND 1 // 2 Layers
+
+	//---- Color ----
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+
+	//---- Fade ----
+	g_flFadeExponent "1.000"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Lighting ----
+	g_flDirectionalLightmapMinZ "0.050"
+	g_flDirectionalLightmapStrength "1.000"
+
+	//---- Material ----
+	g_flTintColor "[1.000000 1.000000 1.000000 0.000000]"
+	TextureAmbientOcclusion "materials/default/default_ao.tga"
+	TextureBlendMask "materials/default/default_blend.tga"
+	TextureBlendSoftness "83.178"
+	TextureColor "materials/metal/metal_plate_diff_2k.jpg"
+	TextureMetalness "materials/default/default_metal.tga"
+	TextureNormal "materials/default/default_normal.tga"
+	TextureRoughness "materials/default/default_rough.tga"
+	TextureScale "100.000"
+	TextureTintMask "materials/default/default.tga"
+
+	//---- Material B ----
+	g_flTintColorB "[1.000000 1.000000 1.000000 0.000000]"
+	TextureAmbientOcclusionB "materials/default/default_ao.tga"
+	TextureBlendMaskB "materials/default/default_blend.tga"
+	TextureBlendSoftnessB "1.000"
+	TextureColorB "materials/metal/rust_coarse_01_diff_2k.jpg"
+	TextureMetalnessB "materials/default/default_metal.tga"
+	TextureNormalB "materials/default/default_normal.tga"
+	TextureRoughnessB "materials/default/default_rough.tga"
+	TextureScaleB "100.000"
+	TextureTintMaskB "materials/default/default.tga"
+
+	//---- Texture Coordinates ----
+	g_nScaleTexCoordUByModelScaleAxis "0"
+	g_nScaleTexCoordVByModelScaleAxis "0"
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[39.623 66.667]"
+	g_vTexCoordScrollSpeed "[9.119 3.418]"
+}
