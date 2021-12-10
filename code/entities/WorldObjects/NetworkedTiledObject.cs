@@ -35,6 +35,7 @@ namespace TerryDefense.entities {
 		[Net] public NetworkedTiledPolygon polygon { get; set; }
 
 		[Net] public Color Color { get; set; }
+		[Net] public float BottomWidth { get; set; }
 	}
 
 	public partial class NetworkedTiledProperty : BaseNetworkable {

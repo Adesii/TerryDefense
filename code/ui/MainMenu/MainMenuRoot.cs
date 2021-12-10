@@ -48,10 +48,16 @@ namespace TerryDefense.UI {
 				};
 				Sun = Light.Point(new(-500, -500, 100), 5000, Color.White);
 				Sun.Falloff = 0;
+				PostProcess.Add(new StandardPostProcess());
 				PostProcess.Add(new GlitchyPostProcess());
 				postProcess = PostProcess.Get<GlitchyPostProcess>();
+				var idk = PostProcess.Get<StandardPostProcess>();
+				idk.Pixelate.Enabled = true;
+				idk.Pixelate.PixelCount = 300;
+
 
 			}
+
 			Planet.Rotation = Planet.Rotation.RotateAroundAxis(Vector3.Up, 0.04f);
 			Planet.ResetInterpolation();
 			SpaceStation.Rotation = SpaceStation.Rotation.RotateAroundAxis(Vector3.Up, -0.2f);

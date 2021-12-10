@@ -2,11 +2,19 @@
 
 Layer0
 {
-	shader "vr_simple.vfx"
+	shader "complex.vfx"
+
+	//---- PBR ----
+	F_DIFFUSE_WRAP 1
+
+	//---- Ambient Occlusion ----
+	g_flAmbientOcclusionDirectDiffuse "1.000"
+	g_flAmbientOcclusionDirectSpecular "0.000"
+	TextureAmbientOcclusion "materials/default/default_ao.tga"
 
 	//---- Color ----
 	g_flModelTintAmount "1.000"
-	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_vColorTint "[0.733333 0.933333 0.894118 0.000000]"
 	TextureColor "textures/planet/earth_col.png"
 
 	//---- Fade ----
@@ -34,4 +42,9 @@ Layer0
 	g_vTexCoordOffset "[0.000 0.000]"
 	g_vTexCoordScale "[1.000 1.000]"
 	g_vTexCoordScrollSpeed "[0.000 0.000]"
+
+	//---- Transmission ----
+	g_flDiffuseExponent "2.000"
+	g_flDiffuseWrap "1.000"
+	g_vDiffuseWrapColor "[0.537255 0.815686 0.780392 0.000000]"
 }

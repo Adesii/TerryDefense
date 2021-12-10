@@ -56,6 +56,8 @@ namespace TerryDefense.entities {
 			var depth = tiledObject.GetCustomProperty("Depth")?.ToFloat(10) ?? 0f;
 			worldObject.Material = Material.Load(tiledObject.GetCustomProperty("CustomMaterial") ?? "materials/cliffside.vmat");
 
+			worldObject.TileObject.BottomWidth = tiledObject.GetCustomProperty("BottomWidth")?.ToFloat(0) ?? 0f;
+
 			worldObject.TileObject.Size = worldObject.TileObject.Size.WithZ(depth.AlmostEqual(0) ? 10 : depth);
 			worldObject.Rotation = Rotation.FromAxis(Vector3.Up, -worldObject.TileObject.Rotation);
 			return worldObject;

@@ -16,9 +16,9 @@
         "tiled.actions"
     ],
     "expandedProjectPaths": [
-        "maps",
         "maps/extensions",
-        "."
+        ".",
+        "maps"
     ],
     "exportAsImage.drawTileGrid": true,
     "exportAsImage.visibleLayersOnly": false,
@@ -32,8 +32,8 @@
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 760,
-                "y": 918
+                "x": -132,
+                "y": 266
             }
         },
         "testmap.tmx": {
@@ -51,7 +51,7 @@
         "maps/testmap.tmx"
     ],
     "project": "maps-project.tiled-project",
-    "property.type": "file",
+    "property.type": "bool",
     "recentFiles": [
         "maps/testmap.tmx",
         "testmap.tmx",

@@ -51,6 +51,7 @@ namespace TerryDefense.entities.WorldObjects {
 
 			VertexBuffer vertices = new();
 			vertices.Init(true);
+			Vector3 lastposition = 0;
 			for(int i = 0; i < points.Count; i += 2) {
 				Vector3 point1 = points[i];
 				Vector3 point2 = points[(i + 1) % points.Count];
@@ -61,13 +62,24 @@ namespace TerryDefense.entities.WorldObjects {
 				Vertex vertex2 = new(point2, Vector3.Up, Vector3.Right, new Vector2(1, 0));
 				Vertex vertex3 = new(point3, Vector3.Up, Vector3.Right, new Vector2(1, 1));
 				Vertex vertex4 = new(point4, Vector3.Up, Vector3.Right, new Vector2(0, 1));
-				Vector3 facenomral = CalculateNormal(vertex1, vertex2, vertex3);
-				vertex1.Normal = facenomral;
-				vertex2.Normal = facenomral;
-				vertex3.Normal = facenomral;
-				vertex4.Normal = facenomral;
-				vertices.AddTriangle(vertex3, vertex4, vertex2);
-				vertices.AddTriangle(vertex3, vertex2, vertex1);
+				Vector3 facenomral = -CalculateNormal(vertex1, vertex2, vertex3);
+				vertex1.Normal = facenomral.Normal;
+				vertex2.Normal = facenomral.Normal;
+				vertex3.Normal = facenomral.Normal;
+				vertex4.Normal = facenomral.Normal;
+				if(TileObject.BottomWidth < 0) {
+					vertex1.Position += (vertex1.Position - vertex3.Position).Normal * TileObject.BottomWidth;
+					vertex3.Position += (vertex3.Position - vertex1.Position).Normal * TileObject.BottomWidth;
+				}
+				vertex1.Position += facenomral.Normal * TileObject.BottomWidth;
+				vertex3.Position += facenomral.Normal * TileObject.BottomWidth;
+				//vertex1.Position += vertex3.Position;
+
+				vertices.AddQuad(vertex2, vertex1, vertex3, vertex4);
+				vertices.AddTriangleIndex(2, -1, 0);
+				//get the last position
+				if(i == 0)
+					lastposition = vertex1.Position;
 			}
 			VertexBuffer TopVertices = new();
 			TopVertices.Init(true);
@@ -84,6 +96,10 @@ namespace TerryDefense.entities.WorldObjects {
 
 			Mesh idk = new(Material);
 			idk.CreateBuffers(vertices);
+			idk.LockVertexBuffer<Vertex>((e) => {
+				if(lastposition == 0) return;
+				e[^2].Position = lastposition;
+			});
 
 			Mesh top = new(Material);
 			top.CreateBuffers(TopVertices);

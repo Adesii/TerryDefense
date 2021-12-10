@@ -1,0 +1,54 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "triplanar.vfx"
+
+	//---- Number Of Blendable Layers ----
+	F_MULTIBLEND 1 // 2 Layers
+
+	//---- Color ----
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+
+	//---- Fade ----
+	g_flFadeExponent "1.000"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Lighting ----
+	g_flDirectionalLightmapMinZ "0.050"
+	g_flDirectionalLightmapStrength "1.000"
+
+	//---- Material ----
+	g_flTintColor "[1.000000 1.000000 1.000000 0.000000]"
+	TextureAmbientOcclusion "materials/default/default_ao.tga"
+	TextureBlendMask "materials/default/default_blend.tga"
+	TextureBlendSoftness "1.000"
+	TextureColor "materials/grass_rock/aerial_grass_rock_diff_4k.jpg"
+	TextureMetalness "materials/default/default_metal.tga"
+	TextureNormal "materials/default/default_normal.tga"
+	TextureRoughness "materials/grass_rock/aerial_grass_rock_rough_4k.jpg"
+	TextureScale "294.393"
+	TextureTintMask "materials/default/default.tga"
+
+	//---- Material B ----
+	g_flTintColorB "[0.239216 0.180392 0.062745 0.000000]"
+	TextureAmbientOcclusionB "materials/Rock019_2K-PNG/Rock019_2K_AmbientOcclusion.png"
+	TextureBlendMaskB "materials/default/default_blend.tga"
+	TextureBlendSoftnessB "26.168"
+	TextureColorB "materials/Rock019_2K-PNG/Rock019_2K_Color.png"
+	TextureMetalnessB "materials/default/default_metal.tga"
+	TextureNormalB "materials/Rock019_2K-PNG/Rock019_2K_NormalDX.png"
+	TextureRoughnessB "materials/Rock019_2K-PNG/Rock019_2K_Roughness.png"
+	TextureScaleB "523.364"
+	TextureTintMaskB "materials/default/default.tga"
+
+	//---- Texture Coordinates ----
+	g_nScaleTexCoordUByModelScaleAxis "0"
+	g_nScaleTexCoordVByModelScaleAxis "0"
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	g_vTexCoordScrollSpeed "[0.000 0.000]"
+}

@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objecttypes>
  <objecttype name="Blocker" color="#a0a0a4">
+  <property name="CustomMaterial" type="file" default="materials/cliffside.vmat"/>
   <property name="DebugColor" type="color" default="#ffcf901c"/>
-  <property name="Depth" type="float" default="32"/>
+  <property name="Depth" type="float" default="96"/>
+  <property name="z" type="float" default="0"/>
  </objecttype>
  <objecttype name="Buildable" color="#37bd35">
   <property name="DebugColor" type="color" default="#ff45e25d"/>
+  <property name="z" type="float" default="0"/>
  </objecttype>
+ <objecttype name="EnemySpawners" color="#a41719"/>
  <objecttype name="Objectives" color="#ebeb34">
   <property name="DebugColor" type="color" default="#fff1e31a"/>
+ </objecttype>
+ <objecttype name="Terrain" color="#98641c">
+  <property name="BottomWidth" type="float" default="40"/>
+  <property name="CustomMaterial" type="file" default="materials/cliffside.vmat"/>
+  <property name="DebugColor" type="color" default="#ffcf901c"/>
+  <property name="Depth" type="float" default="96"/>
+  <property name="z" type="float" default="0"/>
  </objecttype>
 </objecttypes>

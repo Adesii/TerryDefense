@@ -12,7 +12,8 @@ namespace TerryDefense {
 		public const string
 				Blocker = "Blocker",
 				Buildable = "Buildable",
-				Objectives = "Objectives";
+				Objectives = "Objectives",
+				Terrain = "Terrain";
 	}
 
 	public static class TiledExtensions {
@@ -40,7 +41,17 @@ namespace TerryDefense {
 			}
 			return null;
 		}
-
+		public static string GetCustomProperty(this TiledLayer layer, string name) {
+			if(layer.properties != null)
+				foreach(var prop in layer.properties) {
+					if(prop.name == name) {
+						if(string.IsNullOrEmpty(prop.value))
+							return null;
+						return prop.value;
+					}
+				}
+			return null;
+		}
 		public class TileObjectTypes {
 			public List<TiledProperty> properties;
 		}

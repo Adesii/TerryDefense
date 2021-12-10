@@ -16,6 +16,7 @@ namespace TerryDefense.UI {
 		public static void SetNewMainPanel(Panel panel) {
 			Instance.RootPanel.DeleteChildren(true);
 			Instance.MainPanel = panel;
+			Instance.MainPanel?.SetClass("mainpanel", true);
 			Instance.RootPanel.AddChild(panel);
 		}
 	}

@@ -79,8 +79,10 @@ namespace TerryDefense.systems {
 							wobj?.RebuildObject();
 						Instance.WorldObjects.Add(wobj);
 					}
-					objectheight = Instance.WorldObjects[0].TileObject.Size.z; //TODO: Find proper way to adjust the height of the objects
-					Currenttheight += objectheight;
+					if(layer.GetCustomProperty("LayerHeight").ToBool() != true) {
+						objectheight = 96; //TODO: Find proper way to adjust the height of the objects
+						Currenttheight += objectheight;
+					}
 				}
 
 

@@ -4,9 +4,10 @@ using Sandbox;
 
 namespace TerryDefense.Units {
 	public class BaseUnit : AnimEntity {
-		public Pathfinder Pathfinder { get; set; }
+		private Pathfinder Pathfinder { get; set; }
 		public Vector3 Target { get; set; }
-		public float Speed { get; private set; } = 100f;
+		public virtual float Speed { get; private set; } = 100f;
+		public virtual float Health { get; private set; } = 100f;
 
 		private PathRequest pr;
 
@@ -18,9 +19,15 @@ namespace TerryDefense.Units {
 			PathManager.Create(25, 50);
 			Pathfinder = PathManager.GetPathfinder(25, 50);
 			pr = Pathfinder.Request(Target);
+		}
+
+		[Event.Tick.Server]
+		public virtual void Update() {
+			Move();
+
 
 		}
-		[Event.Tick.Server]
+
 		public void Move() {
 			if(Pathfinder == null || pr == null || !pr.IsValid()) {
 				RebuildPath();

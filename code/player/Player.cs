@@ -20,6 +20,17 @@ namespace TerryDefense.Player {
 			WorldManager.InitWorld();
 		}
 
+		public override void Simulate(Client cl) {
+			base.Simulate(cl);
+
+			if(IsClient) {
+				if(Client.DevCamera != null)
+					TerryDefenseHud.Instance.RootPanel.AddClass("dev");
+				else
+					TerryDefenseHud.Instance.RootPanel.RemoveClass("dev");
+			}
+		}
+
 		public override void ClientSpawn() {
 			base.ClientSpawn();
 			TerryDefenseHud.SetNewMainPanel(new IngameHudRoot());

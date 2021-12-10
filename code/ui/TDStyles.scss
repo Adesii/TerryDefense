@@ -59,6 +59,13 @@ Button {
     color: black;
   }
 }
+RootPanel {
+  &.dev {
+    .mainpanel {
+      display: none;
+    }
+  }
+}
 
 .popup-panel {
   background-color: transparent;
