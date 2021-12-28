@@ -6,6 +6,7 @@ using TerryDefense.UI;
 
 namespace TerryDefense.Player {
 	public partial class TerryDefensePlayer : PlayerPawn {
+		[Net] public TowerBuilder towerBuilder { get; set; }
 		public new TDCamera Camera {
 			get => base.Camera as TDCamera;
 			set => base.Camera = value;

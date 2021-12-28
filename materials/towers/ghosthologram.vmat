@@ -1,0 +1,49 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "hologram.vfx"
+
+	//---- Noise Settings ----
+	F_CHROMATIC_ABBERRATION 1
+	F_NOISE 1
+	F_SCAN_LINES 1
+
+	//---- Brightness ----
+	g_fBrightness "2.406"
+
+	//---- Chromatic Abberration ----
+	g_fChromaticAberrationIntensity "2.972"
+
+	//---- Color ----
+	g_flModelTintAmount "1.000"
+	g_flTintColor "[0.141176 0.870588 1.000000 0.521569]"
+	g_vColorTint "[0.341176 0.882353 0.854902 0.000000]"
+
+	//---- Fade ----
+	g_flFadeExponent "1.000"
+
+	//---- Grid ----
+	GridSizeHorizontal "10.000"
+	GridSizeVertical "6.887"
+	GridThicknessHorizontal "3.915"
+	GridThicknessVertical "0.991"
+
+	//---- Material B ----
+	TextureColor "materials/dev/t_polygonprototype_grid_01.png"
+
+	//---- Noise ----
+	g_fNoiseIntensity "2.264"
+
+	//---- ScanLines ----
+	g_fScanLinesIntensity "63.208"
+	g_fScanLinesSize "6.321"
+	g_fScanLinesSpeed "8.491"
+
+	//---- Texture Coordinates ----
+	g_nScaleTexCoordUByModelScaleAxis "0"
+	g_nScaleTexCoordVByModelScaleAxis "0"
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[10.828 3.797]"
+	g_vTexCoordScrollSpeed "[2.611 0.000]"
+}

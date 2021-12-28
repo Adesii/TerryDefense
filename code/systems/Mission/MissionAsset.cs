@@ -32,6 +32,7 @@ namespace TerryDefense {
 		/// data/maps/ will be prefixed to this. making it easier to select the right map just by name
 		/// </summary>
 		public string TileFile { get; set; }
+		public Vector2 MapSize { get; set; }
 		public GameState Scope { get; set; } = GameState.Ingame;
 		public List<Requirement> Requirements { get; set; }
 

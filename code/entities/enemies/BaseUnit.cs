@@ -1,13 +1,17 @@
 using System;
+using System.Collections.Generic;
 using Gamelib.FlowFields;
 using Sandbox;
+using TerryDefense.Towers;
 
 namespace TerryDefense.Units {
 	public class BaseUnit : AnimEntity {
 		private Pathfinder Pathfinder { get; set; }
 		public Vector3 Target { get; set; }
 		public virtual float Speed { get; private set; } = 100f;
-		public virtual float Health { get; private set; } = 100f;
+		public virtual float MaxHealth { get; private set; } = 100f;
+
+		public static List<BaseUnit> Units { get; set; } = new List<BaseUnit>();
 
 		private PathRequest pr;
 
@@ -19,13 +23,29 @@ namespace TerryDefense.Units {
 			PathManager.Create(25, 50);
 			Pathfinder = PathManager.GetPathfinder(25, 50);
 			pr = Pathfinder.Request(Target);
+			Units.Add(this);
+
+			Health = MaxHealth;
+		}
+
+		protected override void OnDestroy() {
+			base.OnDestroy();
+			Units.Remove(this);
 		}
 
 		[Event.Tick.Server]
 		public virtual void Update() {
 			Move();
+		}
 
-
+		public void TakeDamage(BaseTower tower, float damage) {
+			if(IsServer && Health > 0f && LifeState == LifeState.Alive) {
+				Health -= damage;
+				if(Health <= 0f) {
+					Health = 0f;
+					OnKilled();
+				}
+			}
 		}
 
 		public void Move() {

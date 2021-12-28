@@ -7,6 +7,7 @@
 	description(string) : "Description" :  : ""
 	mapfile(string) { editor = "AssetBrowse(vmap)" } : "Map File" :  : ""
 	tilefile(string) : "Tile File" :  : "data/maps/ will be prefixed to this. making it easier to select the right map just by name"
+	mapsize(vector2) : "Map Size" :  : ""
 	scope(choices) : "Scope" : 2 : "" =
 	[
 		0 : "Menu"

@@ -56,6 +56,20 @@ namespace TerryDefense {
 				public NewEnemy() : base(Name) { }
 			}
 		}
+		public static class Tower {
+			public class Attacked : EventAttribute {
+				public static string Name = "Tower.Attacked";
+				public Attacked() : base(Name) { }
+			}
+			public class Destroyed : EventAttribute {
+				public static string Name = "Tower.Destroyed";
+				public Destroyed() : base(Name) { }
+			}
+			public class Tick : EventAttribute {
+				public static string Name = "Tower.Tick";
+				public Tick() : base(Name) { }
+			}
+		}
 
 	}
 }

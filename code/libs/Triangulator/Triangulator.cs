@@ -497,7 +497,7 @@ namespace Triangulator {
 
 		private static void Log(string format, params object[] parameters) {
 			return;
-			TerryDefense.Debug.Info($"{format}, {parameters}");
+			//TerryDefense.Debug.Info($"{format}, {parameters}");
 		}
 
 		#endregion
