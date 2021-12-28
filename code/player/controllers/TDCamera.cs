@@ -11,6 +11,8 @@ namespace TerryDefense.Player {
 		public float Speed => 50f;
 		public Vector3 Velocity;
 
+		Particles _particleSystem;
+
 		public override void Activated() {
 			var cameraConfig = Config.Current.Camera;
 
@@ -22,6 +24,9 @@ namespace TerryDefense.Player {
 			LookAt = new() {
 				Rotation = Rotation.FromAxis(Vector3.Up, 0.01f),
 			};
+
+			_particleSystem = Particles.Create("particles/environment/rain/rain_main.vpcf");
+
 
 			base.Activated();
 		}
@@ -58,6 +63,8 @@ namespace TerryDefense.Player {
 			Position = Position.LerpTo(LookAt.PointToWorld(CameraOffsetPosition), 10 * Time.Delta);
 
 			Rotation = Rotation.LookAt(LookAt.Position - Position, Vector3.Up);
+
+			_particleSystem?.SetPosition(0, Position + Velocity);
 		}
 
 	}
