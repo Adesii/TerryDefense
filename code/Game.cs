@@ -40,6 +40,7 @@ namespace TerryDefense {
 		}
 		[Event.Tick]
 		public void Tick() {
+			Event.Run(TDEvent.Tower.Tick.Name);
 			GameplayManager?.Update();
 		}
 		public override void Shutdown() {

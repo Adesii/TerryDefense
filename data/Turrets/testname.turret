@@ -1,0 +1,18 @@
+{
+  "Name": "TestName",
+  "Description": null,
+  "SerializableComponents": {
+    "TerryDefense.components.turret.AimTurretComponent": {
+      "TargetType": "Farthest",
+      "TurnRate": 5,
+      "Range": 200,
+      "FireRate": 2
+    },
+    "TerryDefense.components.turret.ElementalDamageComponent": {
+      "Element": "Physical",
+      "Damage": 20,
+      "OverTimeDuration": 0,
+      "OverTimeDamageTickRate": 0.5
+    }
+  }
+}

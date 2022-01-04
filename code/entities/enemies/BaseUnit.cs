@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gamelib.FlowFields;
 using Sandbox;
 using TerryDefense.Towers;
@@ -38,7 +39,7 @@ namespace TerryDefense.Units {
 			Move();
 		}
 
-		public void TakeDamage(BaseTower tower, float damage) {
+		public void TakeDamage(float damage) {
 			if(IsServer && Health > 0f && LifeState == LifeState.Alive) {
 				Health -= damage;
 				if(Health <= 0f) {
@@ -70,6 +71,23 @@ namespace TerryDefense.Units {
 			PathManager.Create(25, 50);
 			Pathfinder = PathManager.GetPathfinder(25, 50);
 			pr = Pathfinder.Request(Target);
+		}
+
+
+		public static BaseUnit GetFarthestTarget(BaseTower Tower, float Range) {
+			return BaseUnit.Units.Where(x => x.Position.Distance(Tower.Position) <= Range).OrderByDescending(x => x.Position.Distance(Tower.Position)).FirstOrDefault();
+		}
+
+		public static BaseUnit GetStrongestTarget(BaseTower Tower, float Range) {
+			return BaseUnit.Units.Where(x => x.Position.Distance(Tower.Position) <= Range).OrderByDescending(x => x.MaxHealth).FirstOrDefault();
+		}
+
+		public static BaseUnit GetWeakestTarget(BaseTower Tower, float Range) {
+			return BaseUnit.Units.Where(x => x.Position.Distance(Tower.Position) <= Range).OrderBy(x => x.MaxHealth).FirstOrDefault();
+		}
+
+		public static BaseUnit GetClosestTarget(BaseTower Tower, float Range) {
+			return BaseUnit.Units.Where(x => x.Position.Distance(Tower.Position) <= Range).OrderBy(x => x.Position.Distance(Tower.Position)).FirstOrDefault();
 		}
 	}
 }

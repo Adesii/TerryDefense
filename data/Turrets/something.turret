@@ -1,0 +1,23 @@
+{
+  "Name": "TestName",
+  "Description": "Very very awesome",
+  "SerializableComponents": {
+    "AimTurretComponent": {
+      "TurnRate": 10,
+      "TestProperty": false
+    },
+    "RecoilTurretComponent": {
+      "Recoil": 10,
+      "TestProperty": false
+    },
+    "TestingTurretComponent": {
+      "test": 10,
+      "TestingSomething": 0,
+      "TestingSomethingElse": 0,
+      "TestingSomethingElseAgain": 0,
+      "TestingSomethingElseAgainAgain": 10,
+      "TestingSomethingElseAgainAgainAgain": 10,
+      "TestProperty": false
+    }
+  }
+}

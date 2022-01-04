@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Sandbox;
 using TerryDefense.Player;
 using TerryDefense.Towers;
@@ -20,12 +21,27 @@ namespace TerryDefense.systems {
 
 		public static void CreateTower(Vector3 Position, Rotation Rotation, string TowerName) {
 			if(ConsoleSystem.Caller != null && ConsoleSystem.Caller.Pawn is TerryDefensePlayer player) {
-				var builttower = Library.Create<BaseTower>(TowerName);
+				var builttower = Library.Create<BaseTower>();
+				builttower.LoadPrefab(TowerName);
+
 				builttower.Position = Position;
 				builttower.Rotation = Rotation;
 				player.towerBuilder.tower = null;
 			}
+		}
 
+		[ServerCmd]
+		public static void CreateTower(string TowerName) {
+			if(ConsoleSystem.Caller != null && ConsoleSystem.Caller.Pawn is TerryDefensePlayer player) {
+				var builttower = Library.Create<BaseTower>();
+				builttower.LoadPrefab(TowerName);
+			}
+		}
+		[ServerCmd]
+		public static void DestroyAllTowers() {
+			foreach(var tower in Entity.All.OfType<BaseTower>()) {
+				tower.Delete();
+			}
 		}
 
 	}
