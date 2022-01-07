@@ -4,14 +4,14 @@
   "SerializableComponents": {
     "TerryDefense.components.turret.AimTurretComponent": {
       "TargetType": "Farthest",
-      "TurnRate": 5,
-      "Range": 200,
-      "FireRate": 2
+      "TurnRate": 50,
+      "Range": 300,
+      "FireRate": 0.2
     },
     "TerryDefense.components.turret.ElementalDamageComponent": {
       "Element": "Physical",
       "Damage": 20,
-      "OverTimeDuration": 0,
+      "OverTimeDuration": 2,
       "OverTimeDamageTickRate": 0.5
     }
   }

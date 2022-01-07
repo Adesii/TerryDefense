@@ -1,12 +1,13 @@
 using Sandbox;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using TerryDefense.systems;
 using TerryDefense.UI;
 
 namespace TerryDefense.Player {
 	public partial class TerryDefensePlayer : PlayerPawn {
-		[Net] public TowerBuilder towerBuilder { get; set; }
+		[BindComponent] public TowerBuilder towerBuilder { get; set; }
 		public new TDCamera Camera {
 			get => base.Camera as TDCamera;
 			set => base.Camera = value;
@@ -19,6 +20,8 @@ namespace TerryDefense.Player {
 			Velocity = Vector3.Zero;
 
 			WorldManager.InitWorld();
+
+			towerBuilder = Components.Add<TowerBuilder>(new());
 		}
 
 		public override void Simulate(Client cl) {

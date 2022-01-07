@@ -5,18 +5,25 @@ using TerryDefense.Player;
 using TerryDefense.Towers;
 
 namespace TerryDefense.systems {
-	public partial class TowerBuilder : BaseNetworkable {
+	public partial class TowerBuilder : EntityComponent {
 
 		[Net] BaseTower tower { get; set; }
 
 		SceneObject TowerGhost;
-		string TowerLibraryName;
+		string TowerPrefabName;
 
 		public void EnterBuildMode(string TowerName) {
-			TowerLibraryName = TowerName;
+			TowerPrefabName = TowerName;
 			if(TowerGhost == null)
 				TowerGhost = SceneObject.CreateModel("models/towers/towerghost.vmdl");
 
+		}
+		[Event.Tick]
+		public void Tick() {
+			if(Host.IsClient && TowerGhost != null) {
+				TowerGhost.Position = Trace.Ray(Input.Cursor, 1000).Run().EndPos;
+
+			}
 		}
 
 		public static void CreateTower(Vector3 Position, Rotation Rotation, string TowerName) {
