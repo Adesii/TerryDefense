@@ -21,12 +21,15 @@ namespace TerryDefense.components.turret {
 
 		public float FireRate { get; set; } = 1f;
 
+		public float TargetUpdateTime = 1f;
+
 		private TimeSince LastFire;
+		private TimeSince LastTargetUpdate;
 
 		public override void Tick() {
-			var newTarget = GetTarget();
-			if(newTarget != CurrentTarget) {
-				CurrentTarget = newTarget;
+			if((CurrentTarget == null && LastTargetUpdate > TargetUpdateTime) || LastTargetUpdate > TargetUpdateTime) {
+				CurrentTarget = GetTarget();
+				LastTargetUpdate = 0f;
 			}
 			Debug.Sphere(Entity.Position, Range, Color.Red.WithAlpha(0.1f), 0f);
 			if(CurrentTarget != null) {
