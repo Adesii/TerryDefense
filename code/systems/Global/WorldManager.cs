@@ -32,8 +32,8 @@ namespace TerryDefense.systems {
 			string sterl = StringX.NormalizeFilename(world.MapFile);
 			sterl = Path.GetFileNameWithoutExtension(sterl);
 
-			Log.Error("Loading world: " + sterl);
-			Log.Error($"From Current World: {Global.MapName}");
+			Debug.Error("Loading world: " + sterl);
+			Debug.Error($"From Current World: {Global.MapName}");
 
 
 			if(sterl != Global.MapName && !string.IsNullOrEmpty(Instance.CurrentWorld.MapFile)) {
