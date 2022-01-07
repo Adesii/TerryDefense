@@ -71,7 +71,7 @@ namespace TerryDefense.Towers {
 
 		}
 		private async void DelayedLoad(string tower) {
-			await Task.Delay(100);
+			await Task.Delay(500);
 			LoadPrefab(tower);
 		}
 
