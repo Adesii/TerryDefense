@@ -27,6 +27,13 @@ namespace TerryDefense.Towers {
 		}
 
 		public void LoadPrefab(string towerName) {
+			Components.RemoveAll();
+			TurretInstance.RecacheTurrets();
+			if(TurretInstance.CachedInstances.ContainsKey(towerName)) {
+				foreach(var item in TurretInstance.CachedInstances[towerName].Components) {
+					Components.Add(item.Value);
+				}
+			} else
 			if(FileSystem.Mounted.DirectoryExists("data/Turrets")) {
 				if(FileSystem.Mounted.FileExists($"data/Turrets/{towerName.ToLower()}.turret")) {
 					var data = FileSystem.Mounted.ReadAllText($"data/Turrets/{towerName.ToLower()}.turret");

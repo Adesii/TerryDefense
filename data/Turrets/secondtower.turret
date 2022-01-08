@@ -1,0 +1,18 @@
+{
+  "Name": "SecondTower",
+  "Description": null,
+  "SerializableComponents": {
+    "TerryDefense.components.turret.AimTurretComponent": {
+      "TargetType": "Strongest",
+      "TurnRate": 10,
+      "Range": 300,
+      "FireRate": 1
+    },
+    "TerryDefense.components.turret.ElementalDamageComponent": {
+      "Element": "Physical",
+      "Damage": 1,
+      "OverTimeDuration": 0,
+      "OverTimeDamageTickRate": 0.5
+    }
+  }
+}

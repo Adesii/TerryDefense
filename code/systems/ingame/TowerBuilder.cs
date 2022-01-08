@@ -12,7 +12,10 @@ namespace TerryDefense.systems {
 		SceneObject TowerGhost;
 		string TowerPrefabName;
 
+		[Event("build_turret")]
 		public void EnterBuildMode(string TowerName) {
+			CreateTower(TowerName);
+			return;
 			TowerPrefabName = TowerName;
 			if(TowerGhost == null)
 				TowerGhost = SceneObject.CreateModel("models/towers/towerghost.vmdl");

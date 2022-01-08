@@ -28,7 +28,7 @@ namespace TerryDefense.components.turret {
 
 		public async void OverTimeDamage(BaseUnit Unit) {
 			TimeSince StartOfOverTime = 0;
-			while(StartOfOverTime < OverTimeDuration && Unit.LifeState == LifeState.Alive) {
+			while(Unit.IsValid() && StartOfOverTime < OverTimeDuration && Unit.LifeState == LifeState.Alive) {
 				Unit.TakeDamage(Damage);
 				await GameTask.DelaySeconds(OverTimeDamageTickRate);
 			}
