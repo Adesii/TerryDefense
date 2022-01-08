@@ -1,3 +1,4 @@
 {
-    "sharedassets": "*.*"
+    "sharedassets": "*.*",
+    "rootnamespace": "TerryDefense"
 }
