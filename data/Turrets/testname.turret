@@ -6,7 +6,7 @@
       "TargetType": "Farthest",
       "TurnRate": 50,
       "Range": 300,
-      "FireRate": 0.2
+      "FireRate": 1
     },
     "TerryDefense.components.turret.ElementalDamageComponent": {
       "Element": "Physical",

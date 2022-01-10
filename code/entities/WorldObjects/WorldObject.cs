@@ -10,7 +10,7 @@ namespace TerryDefense.entities {
 	public partial class WorldObject : Entity {
 		[Net] public NetworkedTiledObject TileObject { get; set; }
 
-		protected FlowFieldBlocker _blocker;
+		[Net] protected FlowFieldBlocker _blocker { get; set; }
 
 		[Net] public Material Material { get; set; } = Material.Load("materials/cliffside.vmat");
 
@@ -70,10 +70,14 @@ namespace TerryDefense.entities {
 
 			_blocker?.SetInteractsAs(CollisionLayer.PLAYER_CLIP);
 			_blocker?.SetupPhysicsFromModel(PhysicsMotionType.Static, true);
+			if(_blocker != null)
+				_blocker.Transmit = TransmitType.Always;
 		}
 
 		protected override void OnDestroy() {
 			base.OnDestroy();
+			if(Host.IsClient)
+				return;
 			_blocker?.Delete();
 			_sceneObject?.Delete();
 		}
@@ -84,17 +88,18 @@ namespace TerryDefense.entities {
 
 
 		public virtual void RebuildObject() {
-			Host.AssertServer();
+			//Host.AssertServer();
 			_blocker = new() {
 				Position = Position,
 				Rotation = Rotation,
 				Parent = this,
 			};
-			RpcGenerateObject();
+			if(Host.IsServer)
+				RpcGenerateObject();
 		}
 
 		public virtual void GenerateObject() {
-			if(IsServer || TileObject.type == TileObjectTypes.Buildable) return;
+			//if(IsServer || TileObject.type == TileObjectTypes.Buildable) return;
 			//Log.Error(TileObject.type);
 
 
@@ -106,6 +111,7 @@ namespace TerryDefense.entities {
 		[ClientRpc]
 		public virtual void RpcGenerateObject() {
 			GenerateObject();
+			RebuildObject();
 		}
 
 

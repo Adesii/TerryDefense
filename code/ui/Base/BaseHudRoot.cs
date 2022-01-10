@@ -7,7 +7,7 @@ using TerryDefense.systems;
 
 namespace TerryDefense.UI {
 	[UseTemplate]
-	public class BaseHudRoot : Panel {
+	public class BaseHudRoot : GameRootPanel {
 
 		private BaseCamera m_camera;
 		private BaseRoom m_Room;

@@ -18,6 +18,11 @@ namespace TerryDefense.Towers {
 				item.Tick();
 			}
 		}
+		public override void Spawn() {
+			base.Spawn();
+			SetModel("models/towers/towerghost.vmdl");
+			SetupPhysicsFromModel(PhysicsMotionType.Static, true);
+		}
 		[TDEvent.Tower.Attacked]
 		public virtual void OnAttacked() {
 
@@ -32,6 +37,17 @@ namespace TerryDefense.Towers {
 			if(TurretInstance.CachedInstances.ContainsKey(towerName)) {
 				foreach(var item in TurretInstance.CachedInstances[towerName].Components) {
 					Components.Add(item.Value);
+				}
+				if(Watcher == null) {
+					Watcher = FileSystem.Mounted.Watch($"/data/Turrets/*");
+					Watcher.OnChangedFile += (e) => {
+						Debug.Info($"File changed: {e}");
+						if(e.ToLower() == $"/data/Turrets/{towerName.ToLower()}.turret".ToLower()) {
+							Debug.Info($"Reloading {towerName}");
+							Components.RemoveAll();
+							DelayedLoad(towerName);
+						}
+					};
 				}
 			} else
 			if(FileSystem.Mounted.DirectoryExists("data/Turrets")) {

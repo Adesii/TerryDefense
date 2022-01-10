@@ -31,7 +31,7 @@ namespace TerryDefense.Player {
 			base.Activated();
 		}
 		public void ZoomBy(float amount) {
-			ZoomLevel -= amount * 0.5f;
+			ZoomLevel -= amount * 0.25f;
 			ZoomLevel = ZoomLevel.Clamp(1f, 100f);
 		}
 		public override void Update() {
@@ -54,6 +54,7 @@ namespace TerryDefense.Player {
 			if(Input.Down(InputButton.Menu)) {
 				LookAt.Rotation = LookAt.Rotation.RotateAroundAxis(Vector3.Up, -100f * Time.Delta);
 			}
+			ZoomBy(Input.MouseWheel);
 
 			LookAt.Position = LookAt.Position.LerpTo(LookAt.Position + Velocity.WithZ(0), 5 * Time.Delta);
 			CameraOffsetPosition = CameraOffset;

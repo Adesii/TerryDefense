@@ -7,7 +7,7 @@ using TerryDefense.Player;
 
 namespace TerryDefense.UI {
 	[UseTemplate]
-	public class MainMenuRoot : Panel {
+	public class MainMenuRoot : GameRootPanel {
 
 		Panel recordingcircle { get; set; }
 		Button ContinueButton { get; set; }
