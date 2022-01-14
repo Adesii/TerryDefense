@@ -1,6 +1,6 @@
 {
   "Name": "SecondTower",
-  "Description": null,
+  "Description": "Something Something",
   "SerializableComponents": {
     "TerryDefense.components.turret.AimTurretComponent": {
       "TargetType": "Strongest",

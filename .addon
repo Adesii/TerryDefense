@@ -1,4 +1,15 @@
 {
-    "sharedassets": "*.*",
-    "rootnamespace": "TerryDefense"
+  "SharedAssets": "*.*",
+  "Title": "Terrydefense",
+  "Type": "game",
+  "Org": "local",
+  "Ident": "terrydefense",
+  "FullIdent": "local.terrydefense",
+  "Schema": 1,
+  "NeedsUpgrade": false,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "HasCode": true,
+  "CodePath": "code",
+  "RootNamespace": "TerryDefense"
 }

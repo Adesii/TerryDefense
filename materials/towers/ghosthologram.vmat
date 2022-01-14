@@ -30,7 +30,7 @@ Layer0
 	GridThicknessVertical "0.991"
 
 	//---- Material B ----
-	TextureColor "materials/dev/t_polygonprototype_grid_01.png"
+	TextureColor "dev/helper/testgrid_color.tga"
 
 	//---- Noise ----
 	g_fNoiseIntensity "2.264"
